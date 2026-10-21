@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Portal Login &amp; Registration | Report Saathi</title>
+    <meta name="description" content="Secure patient authentication portal. Sign in with email, phone, or ABHA Health ID to access clinical blood panel reports and personal health dossiers." />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Google Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- Background Canvas Layer -->
+    <div class="bg-canvas-container" id="bg-canvas-container">
+      <canvas id="bg-frame-canvas"></canvas>
+      <canvas id="bg-helix-canvas"></canvas>
+    </div>
+
+    <!-- SITE HEADER -->
+    <header class="site-header">
+      <div class="container-xl nav-row">
+        <div class="brand-block">
+          <a href="/index.html" class="brand-identity">
+            <div class="brand-icon-dna">
+              <span class="material-symbols-outlined" style="font-size: 22px;">biotech</span>
+            </div>
+            <div class="brand-name-group">
+              <span class="brand-name">Report Saathi</span>
+              <span class="brand-tagline">Clinical AI &amp; Biomarker Intelligence</span>
+            </div>
+          </a>
+        </div>
+
+        <nav>
+          <ul class="nav-tab-menu">
+            <li><a href="/index.html" class="nav-tab-link">Overview</a></li>
+            <li><a href="/upload.html" class="nav-tab-link">Upload</a></li>
+            <li><a href="/intelligence.html" class="nav-tab-link">Report AI</a></li>
+            <li><a href="/tracker.html" class="nav-tab-link">Tracker</a></li>
+            <li><a href="/telehealth.html" class="nav-tab-link">Telehealth</a></li>
+            <li><a href="/assistant.html" class="nav-tab-link">AI Assistant</a></li>
+            <li><a href="/profile.html" class="nav-tab-link">Patient Profile</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions-group">
+          <a href="/index.html" class="btn-outline-login" style="padding: 0.42rem 0.9rem; border-radius: var(--radius-full); border: 1px solid var(--border-color); font-size: 0.78rem; font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.85);">
+            <span class="material-symbols-outlined" style="font-size: 15px;">arrow_back</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- AUTHENTICATION SHELL -->
+    <main class="auth-page-container">
+      <div class="auth-card-panel">
+        
+        <!-- Header / Logo -->
+        <div class="auth-header-block">
+          <div class="auth-brand-symbol">
+            <span class="material-symbols-outlined" style="font-size: 32px;">shield_lock</span>
+          </div>
+          <h2>Patient Health Vault</h2>
+          <p>Access your diagnostic reports, personal medical history, and clinical consultations.</p>
+        </div>
+
+        <!-- Mode Switcher (Sign In vs Register) -->
+        <div class="auth-tabs-toggle">
+          <button type="button" class="auth-tab-btn active" id="tab-btn-signin">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="tab-btn-register">New Patient Register</button>
+        </div>
+
+        <!-- SIGN IN FORM -->
+        <form id="form-patient-signin" class="auth-form-wrap">
+          <div class="form-group-item">
+            <label for="input-signin-id">Email, Phone, or ABHA Health ID</label>
+            <input type="text" id="input-signin-id" class="form-input-field" placeholder="e.g. alex.morgan@health.in or 91-8842-1092-4410" value="alex.morgan@health.in" required />
+          </div>
+
+          <div class="form-group-item">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label for="input-signin-pass">Secure Password</label>
+              <a href="#" id="link-forgot-pass" style="font-size: 0.76rem; color: var(--primary); font-weight: 600; text-decoration: none;">Forgot?</a>
+            </div>
+            <div style="position: relative;">
+              <input type="password" id="input-signin-pass" class="form-input-field" placeholder="••••••••••••" value="ReportSaathi2026!" style="width: 100%; padding-right: 40px;" required />
+              <button type="button" id="btn-toggle-pass-visibility" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; display: flex; align-items: center;">
+                <span class="material-symbols-outlined" style="font-size: 18px;" id="icon-pass-eye">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; margin-top: 0.2rem;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-secondary); text-transform: none; letter-spacing: normal;">
+              <input type="checkbox" id="check-remember-me" checked style="accent-color: #1D4E89;" />
+              <span>Remember this session</span>
+            </label>
+            <span style="font-size: 0.74rem; color: #1E7E4E; font-weight: 600;">256-Bit Vault</span>
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="btn-signin-submit">
+            <span class="material-symbols-outlined" style="font-size: 18px;">lock_open</span>
+            <span>Sign In to Health Dossier</span>
+          </button>
+        </form>
+
+        <!-- REGISTRATION FORM (Hidden by default) -->
+        <form id="form-patient-register" class="auth-form-wrap" style="display: none;">
+          <div class="form-group-item">
+            <label for="input-reg-name">Full Legal Name *</label>
+            <input type="text" id="input-reg-name" class="form-input-field" placeholder="e.g. Priya Sharma" required />
+          </div>
+
+          <div class="form-grid-2col" style="gap: 0.75rem;">
+            <div class="form-group-item">
+              <label for="input-reg-email">Email Address *</label>
+              <input type="email" id="input-reg-email" class="form-input-field" placeholder="priya.sharma@health.in" required />
+            </div>
+            <div class="form-group-item">
+              <label for="input-reg-phone">Phone Number *</label>
+              <input type="tel" id="input-reg-phone" class="form-input-field" placeholder="+91 98765 43210" required />
+            </div>
+          </div>
+
+          <div class="form-grid-3col" style="gap: 0.75rem;">
+            <div class="form-group-item">
+              <label for="input-reg-dob">Date of Birth</label>
+              <input type="date" id="input-reg-dob" class="form-input-field" value="1998-05-18" required />
+            </div>
+            <div class="form-group-item">
+              <label for="select-reg-gender">Gender</label>
+              <select id="select-reg-gender" class="form-select-field">
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group-item">
+              <label for="select-reg-blood">Blood Group</label>
+              <select id="select-reg-blood" class="form-select-field">
+                <option value="B+">B+</option>
+                <option value="A+">A+</option>
+                <option value="O+">O+</option>
+                <option value="AB+">AB+</option>
+                <option value="O-">O-</option>
+                <option value="A-">A-</option>
+                <option value="B-">B-</option>
+                <option value="AB-">AB-</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group-item">
+            <label for="input-reg-pass">Create Account Password *</label>
+            <input type="password" id="input-reg-pass" class="form-input-field" placeholder="Minimum 8 characters" required />
+          </div>
+
+          <button type="submit" class="btn-auth-submit" id="btn-register-submit">
+            <span class="material-symbols-outlined" style="font-size: 18px;">person_add</span>
+            <span>Create Patient Account &amp; Profile</span>
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="auth-divider-line">
+          <span>Or 1-Click Demo Patient Login</span>
+        </div>
+
+        <!-- DEMO PATIENTS 1-CLICK SELECTOR -->
+        <div class="demo-accounts-list">
+          <button type="button" class="btn-demo-account-chip" data-patient="alex">
+            <div class="demo-account-meta">
+              <div class="demo-account-avatar">AM</div>
+              <div>
+                <strong style="color: var(--primary); font-size: 0.88rem; display: block;">Alex Morgan</strong>
+                <span style="font-size: 0.74rem; color: var(--text-muted);">42M • CAD Risk, Elevated hs-CRP (O+)</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined" style="color: var(--primary); font-size: 18px;">arrow_forward</span>
+          </button>
+
+          <button type="button" class="btn-demo-account-chip" data-patient="sarah">
+            <div class="demo-account-meta">
+              <div class="demo-account-avatar" style="background: rgba(196, 54, 15, 0.12); color: #C4360F;">SJ</div>
+              <div>
+                <strong style="color: var(--primary); font-size: 0.88rem; display: block;">Sarah Jenkins</strong>
+                <span style="font-size: 0.74rem; color: #C4360F;">34F • Critical Thrombocytopenia (PLT 48k, A-)</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined" style="color: var(--primary); font-size: 18px;">arrow_forward</span>
+          </button>
+
+          <button type="button" class="btn-demo-account-chip" data-patient="priya">
+            <div class="demo-account-meta">
+              <div class="demo-account-avatar" style="background: rgba(183, 129, 26, 0.12); color: #B7811A;">PS</div>
+              <div>
+                <strong style="color: var(--primary); font-size: 0.88rem; display: block;">Priya Sharma</strong>
+                <span style="font-size: 0.74rem; color: #B7811A;">28F • Microcytic Anemia, Ferritin 11 ng/mL (B+)</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined" style="color: var(--primary); font-size: 18px;">arrow_forward</span>
+          </button>
+
+          <button type="button" class="btn-demo-account-chip" data-patient="ramesh">
+            <div class="demo-account-meta">
+              <div class="demo-account-avatar">RP</div>
+              <div>
+                <strong style="color: var(--primary); font-size: 0.88rem; display: block;">Ramesh Patel</strong>
+                <span style="font-size: 0.74rem; color: var(--text-muted);">52M • Type 2 Diabetes, HbA1c 7.4% (B+)</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined" style="color: var(--primary); font-size: 18px;">arrow_forward</span>
+          </button>
+
+          <button type="button" class="btn-demo-account-chip" data-patient="david">
+            <div class="demo-account-meta">
+              <div class="demo-account-avatar" style="background: rgba(30, 126, 78, 0.12); color: #1E7E4E;">DR</div>
+              <div>
+                <strong style="color: var(--primary); font-size: 0.88rem; display: block;">David Ross</strong>
+                <span style="font-size: 0.74rem; color: #1E7E4E;">58M • Post-Chemo Remission Surveillance (O-)</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined" style="color: var(--primary); font-size: 18px;">arrow_forward</span>
+          </button>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer" style="margin-top: 0;">
+      <div class="container-xl" style="text-align: center;">
+        <p style="font-size: 0.8rem; color: var(--text-muted);">
+          Protected under HIPAA &amp; ABDM Data Standards. All patient details stored encrypted in browser local storage.
+        </p>
+      </div>
+    </footer>
+
+    <!-- MAIN APP SCRIPT -->
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

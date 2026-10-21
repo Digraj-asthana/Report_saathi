@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Saathi — Blood Report Intelligence & Biomarker Breakdown</title>
+  <meta name="description" content="In-depth quantitative analysis of blood panels, calibrated physiological range tracks, longitudinal drift analytics, and cross-biomarker synthesis.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+  <!-- FIXED 3D DNA CANVAS BACKGROUND -->
+  <div id="bg-canvas-container" class="bg-canvas-container" aria-hidden="true">
+    <canvas id="bg-frame-canvas" class="bg-canvas-layer"></canvas>
+    <canvas id="bg-helix-canvas" class="bg-canvas-layer"></canvas>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- GLOBAL SITE HEADER & NAVIGATION -->
+    <header class="site-header">
+      <div class="container-xl nav-row">
+        <div class="brand-block">
+          <a href="/index.html" class="brand-identity">
+            <div class="brand-icon-dna">
+              <span class="material-symbols-outlined" style="font-size: 24px;">biotech</span>
+            </div>
+            <div class="brand-name-group">
+              <span class="brand-name">Report Saathi</span>
+              <span class="brand-tagline">Clinical AI &amp; Biomarker Intelligence</span>
+            </div>
+          </a>
+        </div>
+
+        <nav>
+          <ul class="nav-tab-menu">
+            <li><a href="/index.html" class="nav-tab-link">Overview</a></li>
+            <li><a href="/upload.html" class="nav-tab-link">Upload</a></li>
+            <li><a href="/intelligence.html" class="nav-tab-link active">Report AI</a></li>
+            <li><a href="/tracker.html" class="nav-tab-link">Tracker</a></li>
+            <li><a href="/telehealth.html" class="nav-tab-link">Telehealth</a></li>
+            <li><a href="/assistant.html" class="nav-tab-link">AI Assistant</a></li>
+            <li><a href="/profile.html" class="nav-tab-link">Patient Profile</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions-group">
+          <a href="/upload.html" class="btn-upload-primary" id="nav-btn-upload-report" title="Upload Blood Report">
+            <span class="material-symbols-outlined" style="font-size: 16px;">upload_file</span>
+            <span>Upload Report</span>
+          </a>
+
+          <!-- Patient Profile Chip -->
+          <a href="/profile.html" class="nav-patient-profile" id="nav-patient-profile-link" title="Manage Patient Profile">
+            <div class="nav-patient-avatar" id="nav-patient-avatar-box">AM</div>
+            <div style="display: flex; flex-direction: column;">
+              <span class="nav-patient-name" id="nav-patient-name-display">Alex Morgan</span>
+              <span class="nav-patient-badge">Verified Dossier</span>
+            </div>
+          </a>
+
+          <!-- Quick Auth Switch Link -->
+          <a href="/login.html" class="btn-outline-login" id="nav-auth-btn" title="Sign In or Switch Patient Account">
+            <span class="material-symbols-outlined" style="font-size: 15px;">account_circle</span>
+            <span id="nav-auth-text">Sign In</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE HERO BANNER -->
+    <section class="page-hero-banner">
+      <div class="container-xl" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 3px 10px; border-radius: var(--radius-full); text-transform: uppercase;">
+            LAB MODULE 01
+          </span>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">Specimen #HEMA-9042-DX • Quest Diagnostics</span>
+        </div>
+        <h1 class="page-title-editorial">
+          Blood Report Intelligence &amp; <em>Analytic Triage</em>
+        </h1>
+        <p class="page-subtitle-lead">
+          Comprehensive quantification of 26+ physiological markers across Complete Blood Count, Metabolic Panel, Lipid Fractionation, and Immunomodulation tiers.
+        </p>
+      </div>
+    </section>
+
+    <!-- SPECIMEN METADATA STRIP -->
+    <section style="background: rgba(246, 242, 235, 0.95); border-bottom: 1px solid var(--border-beige); padding: 1.25rem 0;">
+      <div class="container-xl" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; font-size: 0.84rem; color: var(--text-secondary);">
+          <span style="padding: 3px 10px; border-radius: var(--radius-full); background: var(--primary); color: #FFFFFF; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;">VERIFIED HL7 / LOINC</span>
+          <span style="color: var(--border-color);">•</span>
+          <span>Deterministic Status Engine (ADR-03)</span>
+          <span style="color: var(--border-color);">•</span>
+          <span>Fasting: 12 Hours Verified</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button id="btn-open-ocr-review" style="display: inline-flex; align-items: center; gap: 6px; padding: 0.5rem 1rem; border-radius: var(--radius-md); background: #FFFFFF; color: var(--primary); font-size: 0.82rem; font-weight: 700; border: 1px solid var(--border-color); cursor: pointer;" type="button" onclick="window.app.openHumanReviewModal()">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--accent-action);">fact_check</span>
+            <span>Side-by-Side OCR Review (FR-108)</span>
+          </button>
+          <a href="/telehealth.html" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.82rem;">
+            <span class="material-symbols-outlined" style="font-size: 18px;">video_call</span>
+            <span>Consult Doctor</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12-COLUMN MAIN BIOMARKER INTELLIGENCE WORKSPACE -->
+    <main class="main-report-section" id="report-intelligence-section">
+      <div class="container-xl">
+        <!-- Filter Tabs Bar -->
+        <div class="filter-tabs-bar">
+          <div class="category-filter-chips">
+            <button class="chip-filter-btn active" data-module="all" type="button">All Analytes</button>
+            <button class="chip-filter-btn" data-module="blood" type="button">Blood Count (CBC)</button>
+            <button class="chip-filter-btn" data-module="lipid" type="button">Lipids &amp; Cardiovascular</button>
+            <button class="chip-filter-btn" data-module="diabetes" type="button">Glycemic &amp; Diabetes</button>
+            <button class="chip-filter-btn" data-module="renal" type="button">Renal / Kidney</button>
+            <button class="chip-filter-btn" data-module="hepatic" type="button">Hepatic / Liver</button>
+            <button class="chip-filter-btn" data-module="thyroid" type="button">Thyroid</button>
+          </div>
+
+          <div class="lens-toggle-switch">
+            <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); padding: 0 8px; display: flex; align-items: center; gap: 4px;">
+              <span class="material-symbols-outlined" style="font-size: 14px;">tune</span> Lens:
+            </span>
+            <button class="btn-lens-opt active" id="btn-lens-patient" type="button">Patient Plain-English</button>
+            <button class="btn-lens-opt" id="btn-lens-clinical" type="button">Pathologist / MD</button>
+          </div>
+        </div>
+
+        <!-- 12-Col Layout -->
+        <div class="report-12col-layout">
+          <!-- 8-Col Biomarkers Stream -->
+          <div class="biomarkers-stream-col">
+            <div class="critical-triage-card">
+              <div style="display: flex; align-items: center; gap: 1.25rem;">
+                <div class="triage-icon-bubble">
+                  <span class="material-symbols-outlined" style="font-size: 22px;">priority_high</span>
+                </div>
+                <div class="triage-text-body">
+                  <h4>Immediate Attention Markers</h4>
+                  <p>Elevated hs-CRP (3.8 mg/L) and Chol/HDL Ratio (5.4) warrant dietary and cardiovascular follow-up.</p>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
+                <span style="font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-sm); background: var(--accent-action); color: #FFFFFF;">
+                  2 Critical
+                </span>
+                <span style="font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-sm); background: var(--status-borderline-bg); color: var(--status-borderline); border: 1px solid rgba(183,129,26,0.3);">
+                  2 Borderline
+                </span>
+              </div>
+            </div>
+
+            <div id="biomarkers-stream-container" style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <!-- Biomarkers dynamically rendered via app.js -->
+            </div>
+          </div>
+
+          <!-- 4-Col Sticky AI Synthesis Sidebar -->
+          <div class="ai-synthesis-col">
+            <div class="synthesis-card-glass">
+              <div class="synthesis-card-header">
+                <h4>
+                  <span class="material-symbols-outlined" style="color: var(--accent-action); font-size: 22px;">psychology</span>
+                  Cross-Biomarker Synthesis
+                </h4>
+                <span class="badge-confidence">99.4% CONF</span>
+              </div>
+
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                The neural correlation model identified an interplay between <strong style="color: var(--primary); font-weight: 700;">Elevated hs-CRP (3.8 mg/L)</strong> and <strong style="color: var(--primary); font-weight: 700;">Chol/HDL Ratio (5.4)</strong>, with mild compensatory Vitamin D suppression.
+              </p>
+
+              <div class="trajectory-chart-wrap">
+                <span class="trajectory-headline">6-Month Trend Trajectory</span>
+                <svg class="trajectory-svg" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="0" y1="20" x2="280" y2="20" stroke="#D5E0EA" stroke-dasharray="3 3"></line>
+                  <line x1="0" y1="50" x2="280" y2="50" stroke="#D5E0EA" stroke-dasharray="3 3"></line>
+                  <path d="M10 65 Q 80 55, 150 40 T 270 18" stroke="#E4572E" stroke-width="2.5" stroke-linecap="round" fill="none"></path>
+                  <path d="M10 42 Q 90 40, 160 48 T 270 52" stroke="#1D4E89" stroke-width="2" stroke-linecap="round" fill="none"></path>
+                  <circle cx="270" cy="18" r="4" fill="#E4572E"></circle>
+                  <circle cx="270" cy="52" r="4" fill="#1D4E89"></circle>
+                </svg>
+                <div class="trajectory-timeline-labels">
+                  <span>Aug '25</span>
+                  <span>Nov '25</span>
+                  <span style="color: var(--accent-action); font-weight: 700;">Feb '26 (Now)</span>
+                </div>
+              </div>
+
+              <div class="synthesis-checks-list">
+                <div class="check-item">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  <span>Early subclinical metabolic-vascular resistance. Insulin resistance index: 1.8 (Borderline).</span>
+                </div>
+                <div class="check-item">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  <span>No acute hematological cytopenia. RBC and Platelet dynamics stable.</span>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 10px; padding: 0.75rem; border-radius: var(--radius-md); background: var(--bg-card-subtle); border: 1px solid var(--border-color);">
+                <input type="checkbox" id="doc-verify-cb" checked style="width: 16px; height: 16px; accent-color: var(--primary);">
+                <label for="doc-verify-cb" style="font-size: 0.78rem; font-weight: 600; color: var(--primary); cursor: pointer;">
+                  Clinical report verified by attending hematologist (Dr. Sharma, MD)
+                </label>
+              </div>
+
+              <a href="/telehealth.html" class="btn-book-consult">
+                <span class="material-symbols-outlined" style="font-size: 18px;">video_call</span>
+                <span>Review Findings with Dr. Sharma</span>
+              </a>
+
+              <a href="/tracker.html" style="text-align: center; font-size: 0.8rem; font-weight: 700; color: var(--accent-action); text-decoration: none;">
+                View Multi-Year Trajectory Tracker →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ACCREDITATIONS STRIP -->
+    <section class="accreditations-strip">
+      <div class="container-xl accreditations-row">
+        <div class="accreditations-title">
+          <h4>Engineered Under Strict CLIA &amp; CAP Laboratory Protocols</h4>
+          <p>Report Saathi algorithms are trained and dual-validated across 2.4 million de-identified pathology panels.</p>
+        </div>
+
+        <div class="accreditation-badges-list">
+          <div class="badge-accred-chip">
+            <span class="material-symbols-outlined" style="color: var(--primary);">shield</span>
+            <span>HIPAA Certified BAA</span>
+          </div>
+          <div class="badge-accred-chip">
+            <span class="material-symbols-outlined" style="color: #1E7E4E;">verified_user</span>
+            <span>HL7 / FHIR Native</span>
+          </div>
+          <div class="badge-accred-chip">
+            <span class="material-symbols-outlined" style="color: var(--accent-action);">biotech</span>
+            <span>CLIA Compliant</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container-xl">
+        <div class="footer-columns-grid">
+          <div class="footer-col">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <span class="brand-name" style="font-size: 1.35rem;">Report Saathi</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; max-width: 300px;">
+              Precision hematology quantification, automated analyte differential diagnosis, and tele-hematologist collaborative platform.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h5>Navigation Portals</h5>
+            <ul>
+              <li><a href="/index.html">Overview &amp; Home</a></li>
+              <li><a href="/intelligence.html">Blood Report Intelligence</a></li>
+              <li><a href="/tracker.html">Biomarker Tracker</a></li>
+              <li><a href="/telehealth.html">Doctor Consultations</a></li>
+              <li><a href="/assistant.html">AI Diagnostic Assistant</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Accredited Panels</h5>
+            <ul>
+              <li><a href="javascript:void(0)">Complete Blood Count (CBC)</a></li>
+              <li><a href="javascript:void(0)">Comprehensive Metabolic (CMP)</a></li>
+              <li><a href="javascript:void(0)">Lipid Fractionation Profiler</a></li>
+              <li><a href="javascript:void(0)">Thyroid Panel (TSH / T3 / T4)</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Governance</h5>
+            <ul>
+              <li><a href="javascript:void(0)">HIPAA Security Rule</a></li>
+              <li><a href="javascript:void(0)">DPDP Act 2023</a></li>
+              <li><a href="javascript:void(0)">Peer-Reviewed Validation</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom-bar">
+          <div>© 2026 Report Saathi Systems Inc. All clinical calculations dual-validated by licensed hematologists.</div>
+          <div>Running Dedicated Cool Lab Mode • 227-Frame Continuous Background Canvas</div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- FLOATING DNA HUD CONTROLLER -->
+  <div class="floating-hud" id="floating-hud">
+    <div class="hud-panel" id="hud-panel">
+      <div class="hud-header">
+        <h4>
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--primary);">biotech</span>
+          DNA Background Engine
+        </h4>
+      </div>
+
+      <div class="hud-control-row">
+        <div class="hud-control-label">
+          <span>Continuous Rotation Speed:</span>
+          <span id="hud-speed-val" style="font-family: var(--font-mono); color: var(--primary);">0.30x</span>
+        </div>
+        <input type="range" id="hud-speed-slider" class="hud-slider" min="0" max="1.2" step="0.05" value="0.30">
+      </div>
+
+      <div class="hud-control-row">
+        <div class="hud-control-label">
+          <span>Scroll Scrub Sensitivity:</span>
+          <span id="hud-scroll-val" style="font-family: var(--font-mono); color: var(--accent-action);">0.05</span>
+        </div>
+        <input type="range" id="hud-scroll-slider" class="hud-slider" min="0.01" max="0.20" step="0.01" value="0.05">
+      </div>
+
+      <div style="margin-top: 8px;">
+        <button id="hud-pause-btn" style="width: 100%; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #FFFFFF; color: var(--primary); font-size: 0.78rem; font-weight: 600; cursor: pointer;">
+          ⏸ Pause Rotation
+        </button>
+      </div>
+
+      <div class="hud-color-specs-strip">
+        <div style="font-weight: 700; color: var(--primary); text-transform: uppercase; font-size: 0.7rem; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; margin-bottom: 2px;">
+          Active Cool Lab Palette:
+        </div>
+        <div class="spec-line">
+          <span>Strand 1</span>
+          <span class="spec-chip">
+            <span class="spec-swatch" style="background: #1D4E89;"></span> #1D4E89 (16%)
+          </span>
+        </div>
+        <div class="spec-line">
+          <span>Strand 2</span>
+          <span class="spec-chip">
+            <span class="spec-swatch" style="background: #7FA7D9;"></span> #7FA7D9 (16%)
+          </span>
+        </div>
+        <div class="spec-line">
+          <span>Base-pair rungs</span>
+          <span class="spec-chip">
+            <span class="spec-swatch" style="background: #D5E0EA;"></span> #D5E0EA (60%)
+          </span>
+        </div>
+        <div class="spec-line">
+          <span>Nodes (dots)</span>
+          <span class="spec-chip">
+            <span class="spec-swatch" style="background: #E4572E;"></span> #E4572E (25%)
+          </span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 0.75rem;">
+        <span id="hud-frame-display" style="font-weight: 700; color: var(--primary);">001 / 227</span>
+        <span id="hud-fps-display" style="font-weight: 700; color: var(--accent-action);">60 FPS</span>
+      </div>
+    </div>
+
+    <button class="hud-trigger-btn" id="hud-trigger-btn" title="Open DNA Animation Controls">
+      <span class="material-symbols-outlined" style="font-size: 18px;">biotech</span>
+      <span>DNA Canvas Controls</span>
+    </button>
+  </div>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>

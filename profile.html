@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Profile &amp; Clinical History | Report Saathi</title>
+    <meta name="description" content="Manage personal demographic details, clinical medical history, chronic conditions, daily medications, and baseline vitals in your secure patient health profile." />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Google Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- Background Canvas Layer -->
+    <div class="bg-canvas-container" id="bg-canvas-container">
+      <canvas id="bg-frame-canvas"></canvas>
+      <canvas id="bg-helix-canvas"></canvas>
+    </div>
+
+    <!-- SITE HEADER -->
+    <header class="site-header">
+      <div class="container-xl nav-row">
+        <div class="brand-block">
+          <a href="/index.html" class="brand-identity">
+            <div class="brand-icon-dna">
+              <span class="material-symbols-outlined" style="font-size: 22px;">biotech</span>
+            </div>
+            <div class="brand-name-group">
+              <span class="brand-name">Report Saathi</span>
+              <span class="brand-tagline">Clinical AI &amp; Biomarker Intelligence</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Multi-Page Navigation Menu -->
+        <nav>
+          <ul class="nav-tab-menu">
+            <li><a href="/index.html" class="nav-tab-link">Overview</a></li>
+            <li><a href="/upload.html" class="nav-tab-link">Upload</a></li>
+            <li><a href="/intelligence.html" class="nav-tab-link">Report AI</a></li>
+            <li><a href="/tracker.html" class="nav-tab-link">Tracker</a></li>
+            <li><a href="/telehealth.html" class="nav-tab-link">Telehealth</a></li>
+            <li><a href="/assistant.html" class="nav-tab-link">AI Assistant</a></li>
+            <li><a href="/profile.html" class="nav-tab-link active">Patient Profile</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions-group">
+          <a href="/upload.html" class="btn-upload-primary" id="nav-btn-upload-report" title="Upload Blood Report">
+            <span class="material-symbols-outlined" style="font-size: 16px;">upload_file</span>
+            <span>Upload Report</span>
+          </a>
+
+          <!-- Patient Profile Chip in Nav -->
+          <a href="/profile.html" class="nav-patient-profile" id="nav-patient-profile-link" title="Manage Patient Profile">
+            <div class="nav-patient-avatar" id="nav-patient-avatar-box">AM</div>
+            <div style="display: flex; flex-direction: column;">
+              <span class="nav-patient-name" id="nav-patient-name-display">Alex Morgan</span>
+              <span class="nav-patient-badge">Verified Dossier</span>
+            </div>
+          </a>
+
+          <!-- Quick Auth Switch Link -->
+          <a href="/login.html" class="btn-outline-login" id="nav-auth-btn" title="Sign In or Switch Patient Account">
+            <span class="material-symbols-outlined" style="font-size: 15px;">account_circle</span>
+            <span id="nav-auth-text">Switch</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN PROFILE WORKSPACE -->
+    <main class="profile-page-shell">
+      <div class="container-xl">
+
+        <!-- PATIENT HERO CARD -->
+        <div class="profile-hero-card" id="profile-hero-card">
+          <div class="profile-user-group">
+            <div class="profile-avatar-large" id="profile-avatar-display">
+              <span id="profile-avatar-initials">AM</span>
+              <span class="profile-avatar-status-dot" title="Active Patient Account"></span>
+            </div>
+            <div class="profile-title-block">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="hero-tag-pill" style="font-size: 0.72rem; padding: 2px 10px; margin-bottom: 4px;">
+                  <span class="pulse-indicator"></span>
+                  <span>Personal Health Dossier • Encrypted Storage</span>
+                </span>
+              </div>
+              <h1 id="hero-display-name">Alex Morgan</h1>
+              <div class="profile-meta-pills">
+                <span class="meta-pill-chip meta-pill-blood" id="hero-blood-group">
+                  <span class="material-symbols-outlined" style="font-size: 14px;">bloodtype</span>
+                  <span>Blood: O+</span>
+                </span>
+                <span class="meta-pill-chip meta-pill-abha" id="hero-abha-id">
+                  <span class="material-symbols-outlined" style="font-size: 14px;">badge</span>
+                  <span>ABHA: 91-8842-1092-4410</span>
+                </span>
+                <span class="meta-pill-chip meta-pill-mrn" id="hero-mrn-id">
+                  <span class="material-symbols-outlined" style="font-size: 14px;">medical_information</span>
+                  <span>MRN: #892-4410-X</span>
+                </span>
+                <span class="meta-pill-chip" style="background: rgba(14, 36, 58, 0.06); color: var(--text-secondary); border: 1px solid var(--border-color);" id="hero-age-gender">
+                  <span class="material-symbols-outlined" style="font-size: 14px;">person</span>
+                  <span>42 Yrs • Male</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions in Hero -->
+          <div class="profile-header-actions">
+            <button type="button" class="btn-profile-action btn-save-profile" id="hero-save-btn">
+              <span class="material-symbols-outlined" style="font-size: 16px;">save</span>
+              <span>Save Changes</span>
+            </button>
+            <button type="button" class="btn-profile-action btn-export-dossier" id="hero-export-btn">
+              <span class="material-symbols-outlined" style="font-size: 16px;">download</span>
+              <span>Export (JSON)</span>
+            </button>
+            <a href="/login.html" class="btn-profile-action btn-sample-switch" id="hero-switch-btn">
+              <span class="material-symbols-outlined" style="font-size: 16px;">sync_alt</span>
+              <span>Switch Patient</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- ACTIVE CLINICAL & LAB DASHBOARD OVERVIEW -->
+        <div class="profile-dashboard-panel-card" id="profile-diagnostic-dashboard">
+          <div class="dashboard-panel-top">
+            <div class="dashboard-specimen-badge">
+              <span class="pulse-indicator"></span>
+              <strong id="prof-dash-category">Cardiovascular Risk &amp; Lipid Prophylaxis Panel</strong>
+              <span style="color: var(--border-color); margin: 0 4px;">•</span>
+              <span style="color: var(--text-muted); font-size: 0.8rem;" id="prof-dash-lab">Quest Diagnostics • Specimen Date: 14 Oct 2026</span>
+            </div>
+            <div class="dashboard-quick-actions">
+              <a href="/upload.html" class="btn-dash-action btn-dash-upload" id="profile-dash-upload-btn" title="Upload New Laboratory Report">
+                <span class="material-symbols-outlined" style="font-size: 15px;">upload_file</span>
+                <span>Upload Report</span>
+              </a>
+              <a href="/intelligence.html" class="btn-dash-action" title="Open Complete Lab Parameter Analysis">
+                <span class="material-symbols-outlined" style="font-size: 15px;">neurology</span>
+                <span>Deep Report AI</span>
+              </a>
+              <a href="/tracker.html" class="btn-dash-action" title="View Biomarker Trajectories">
+                <span class="material-symbols-outlined" style="font-size: 15px;">timeline</span>
+                <span>Trajectories</span>
+              </a>
+              <a href="/telehealth.html" class="btn-dash-action btn-dash-primary" title="Consult Attending Doctor">
+                <span class="material-symbols-outlined" style="font-size: 15px;">video_call</span>
+                <span>Consult Doctor</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- 3-Column Diagnostic Summary KPI Strip -->
+          <div class="dashboard-kpi-grid">
+            <div class="dashboard-kpi-item">
+              <span class="kpi-label">Analyzed Markers</span>
+              <div class="kpi-val-group">
+                <span class="kpi-num" id="prof-dash-total">18</span>
+                <span class="kpi-sub">Total Analytes</span>
+              </div>
+              <span class="kpi-tag kpi-optimal">Complete Panel</span>
+            </div>
+
+            <div class="dashboard-kpi-item">
+              <span class="kpi-label">Within Reference Range</span>
+              <div class="kpi-val-group">
+                <span class="kpi-num" style="color: #1E7E4E;" id="prof-dash-in-range">13</span>
+                <span class="kpi-sub">Parameters</span>
+              </div>
+              <span class="kpi-tag kpi-optimal" id="prof-dash-pct">72% Optimal</span>
+            </div>
+
+            <div class="dashboard-kpi-item">
+              <span class="kpi-label">Outside Clinical Reference</span>
+              <div class="kpi-val-group">
+                <span class="kpi-num" style="color: #E4572E;" id="prof-dash-flagged">5</span>
+                <span class="kpi-sub">Flagged</span>
+              </div>
+              <span class="kpi-tag kpi-flagged" id="prof-dash-alert-tag">Attention Advised</span>
+            </div>
+          </div>
+
+          <!-- Key Diagnostic Biomarkers Preview Strip -->
+          <div class="dashboard-biomarkers-preview" id="prof-dash-biomarkers-strip">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- PROFILE NAVIGATION TABS -->
+        <div class="profile-tabs-strip" id="profile-tabs-bar">
+          <button type="button" class="profile-tab-btn active" data-tab="personal">
+            <span class="material-symbols-outlined" style="font-size: 18px;">badge</span>
+            <span>Personal &amp; Contact Info</span>
+          </button>
+          <button type="button" class="profile-tab-btn" data-tab="clinical">
+            <span class="material-symbols-outlined" style="font-size: 18px;">clinical_notes</span>
+            <span>Clinical History &amp; Surgeries</span>
+          </button>
+          <button type="button" class="profile-tab-btn" data-tab="medications">
+            <span class="material-symbols-outlined" style="font-size: 18px;">medication</span>
+            <span>Medications &amp; Supplements</span>
+          </button>
+          <button type="button" class="profile-tab-btn" data-tab="vitals">
+            <span class="material-symbols-outlined" style="font-size: 18px;">vital_signs</span>
+            <span>Baseline Vitals &amp; BMI</span>
+          </button>
+          <button type="button" class="profile-tab-btn" data-tab="lifestyle">
+            <span class="material-symbols-outlined" style="font-size: 18px;">lifestyle</span>
+            <span>Lifestyle &amp; Prevention</span>
+          </button>
+        </div>
+
+        <!-- TAB CONTENT CONTAINER -->
+        <form id="patient-profile-form" autocomplete="off">
+
+          <!-- TAB 1: PERSONAL & CONTACT INFO -->
+          <div class="profile-panel-block active" id="tab-panel-personal">
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">person</span>
+                    <span>Legal Identity &amp; Demographics</span>
+                  </h3>
+                  <p>Official patient records used across diagnostic laboratory requisitions and telehealth consults.</p>
+                </div>
+              </div>
+
+              <div class="form-grid-3col">
+                <div class="form-group-item">
+                  <label for="input-full-name">Full Legal Name *</label>
+                  <input type="text" id="input-full-name" class="form-input-field" placeholder="e.g. Alex Morgan" required />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-dob">Date of Birth *</label>
+                  <input type="date" id="input-dob" class="form-input-field" required />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-age">Age (Years)</label>
+                  <input type="number" id="input-age" class="form-input-field" min="1" max="120" placeholder="e.g. 42" />
+                </div>
+              </div>
+
+              <div class="form-grid-3col" style="margin-top: 1.5rem;">
+                <div class="form-group-item">
+                  <label for="select-gender">Biological Gender</label>
+                  <select id="select-gender" class="form-select-field">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-Binary">Non-Binary</option>
+                    <option value="Other">Other / Prefer not to specify</option>
+                  </select>
+                </div>
+
+                <div class="form-group-item">
+                  <label for="select-blood-group">Blood Group</label>
+                  <select id="select-blood-group" class="form-select-field">
+                    <option value="A+">A Positive (A+)</option>
+                    <option value="A-">A Negative (A-)</option>
+                    <option value="B+">B Positive (B+)</option>
+                    <option value="B-">B Negative (B-)</option>
+                    <option value="AB+">AB Positive (AB+)</option>
+                    <option value="AB-">AB Negative (AB-)</option>
+                    <option value="O+">O Positive (O+)</option>
+                    <option value="O-">O Negative (O-)</option>
+                  </select>
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-abha-id">ABHA ID (Ayushman Bharat)</label>
+                  <input type="text" id="input-abha-id" class="form-input-field" placeholder="91-XXXX-XXXX-XXXX" />
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">contacts</span>
+                    <span>Contact Details &amp; Emergency Guardian</span>
+                  </h3>
+                  <p>Communication addresses and primary emergency contact reachable 24/7 during critical clinical findings.</p>
+                </div>
+              </div>
+
+              <div class="form-grid-2col">
+                <div class="form-group-item">
+                  <label for="input-phone">Primary Phone Number</label>
+                  <input type="tel" id="input-phone" class="form-input-field" placeholder="+91 98765 43210" />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-email">Email Address</label>
+                  <input type="email" id="input-email" class="form-input-field" placeholder="patient@example.com" />
+                </div>
+              </div>
+
+              <div class="form-grid-2col" style="margin-top: 1.5rem;">
+                <div class="form-group-item">
+                  <label for="input-address">Street Address</label>
+                  <input type="text" id="input-address" class="form-input-field" placeholder="Flat / Building, Street, Area" />
+                </div>
+
+                <div class="form-grid-3col" style="gap: 0.75rem;">
+                  <div class="form-group-item">
+                    <label for="input-city">City</label>
+                    <input type="text" id="input-city" class="form-input-field" placeholder="Bengaluru" />
+                  </div>
+                  <div class="form-group-item">
+                    <label for="input-state">State</label>
+                    <input type="text" id="input-state" class="form-input-field" placeholder="Karnataka" />
+                  </div>
+                  <div class="form-group-item">
+                    <label for="input-pincode">PIN Code</label>
+                    <input type="text" id="input-pincode" class="form-input-field" placeholder="560103" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-grid-3col" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border-color);">
+                <div class="form-group-item">
+                  <label for="input-emergency-name">Emergency Contact Name</label>
+                  <input type="text" id="input-emergency-name" class="form-input-field" placeholder="Rachel Morgan" />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-emergency-relation">Relationship</label>
+                  <input type="text" id="input-emergency-relation" class="form-input-field" placeholder="Spouse / Parent / Sibling" />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-emergency-phone">Emergency Contact Phone</label>
+                  <input type="tel" id="input-emergency-phone" class="form-input-field" placeholder="+91 98765 43211" />
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">health_and_safety</span>
+                    <span>Health Insurance &amp; Primary Physician</span>
+                  </h3>
+                  <p>Insurance coverage and primary consulting doctor for seamless tele-claims and prescription sharing.</p>
+                </div>
+              </div>
+
+              <div class="form-grid-3col">
+                <div class="form-group-item">
+                  <label for="input-insurance-provider">Insurance Provider</label>
+                  <input type="text" id="input-insurance-provider" class="form-input-field" placeholder="e.g. Star Health Premier / HDFC ERGO" />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-insurance-policy">Policy / Member ID</label>
+                  <input type="text" id="input-insurance-policy" class="form-input-field" placeholder="POL-SH-99210-DX" />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-primary-physician">Primary Care Physician</label>
+                  <input type="text" id="input-primary-physician" class="form-input-field" placeholder="Dr. Anita Sharma, MD" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: CLINICAL HISTORY & SURGERIES -->
+          <div class="profile-panel-block" id="tab-panel-clinical">
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">checklist</span>
+                    <span>Diagnosed Medical Conditions</span>
+                  </h3>
+                  <p>Click to select or deselect conditions. You can also type and add custom clinical diagnoses.</p>
+                </div>
+              </div>
+
+              <div class="tag-selection-cloud" id="conditions-tag-cloud">
+                <!-- Dynamically populated or rendered -->
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem; max-width: 540px;">
+                <input type="text" id="input-custom-condition" class="form-input-field" placeholder="Add custom condition (e.g. Hashimoto Thyroiditis)" style="flex: 1;" />
+                <button type="button" class="btn-add-entity" id="btn-add-condition">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                  <span>Add Condition</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Past Surgeries and Hospitalizations -->
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">local_hospital</span>
+                    <span>Past Surgeries &amp; Major Hospitalizations</span>
+                  </h3>
+                  <p>Surgical history assists our AI in contextualizing inflammatory markers, platelets, and scarring artifacts.</p>
+                </div>
+                <button type="button" class="btn-add-entity" id="btn-add-surgery-row">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">add_circle</span>
+                  <span>Add Surgery</span>
+                </button>
+              </div>
+
+              <div class="dynamic-items-container" id="surgeries-list-container">
+                <!-- Dynamic Surgery Rows -->
+              </div>
+            </div>
+
+            <!-- Allergies & Adverse Drug Reactions -->
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">warning</span>
+                    <span>Known Allergies &amp; Drug Reactions</span>
+                  </h3>
+                  <p>Crucial for telemedicine safety. Prescriptions cross-check this allergy registry before generating pharmacy orders.</p>
+                </div>
+                <button type="button" class="btn-add-entity" id="btn-add-allergy-row" style="border-color: #C4360F; color: #C4360F; background: rgba(196,54,15,0.06);">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">add_alert</span>
+                  <span>Add Allergy</span>
+                </button>
+              </div>
+
+              <div class="dynamic-items-container" id="allergies-list-container">
+                <!-- Dynamic Allergy Rows -->
+              </div>
+            </div>
+
+            <!-- Family Medical History -->
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">family_restroom</span>
+                    <span>Family Medical History</span>
+                  </h3>
+                  <p>Genetic predispositions for cardiovascular disease, diabetes, hematologic dyscrasias, and cancer.</p>
+                </div>
+              </div>
+
+              <div class="form-group-item">
+                <label for="textarea-family-history">Family Hereditary Notes</label>
+                <textarea id="textarea-family-history" class="form-textarea-field" rows="4" placeholder="Father: CAD at age 52&#10;Mother: Essential Hypertension&#10;Paternal Uncle: Type 2 Diabetes"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: MEDICATIONS & SUPPLEMENTS -->
+          <div class="profile-panel-block" id="tab-panel-medications">
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">pill</span>
+                    <span>Active Prescribed Medications</span>
+                  </h3>
+                  <p>Current pharmaceutical regimen. Keeps doctors informed during telehealth consults to prevent adverse interactions.</p>
+                </div>
+                <button type="button" class="btn-add-entity" id="btn-add-med-row">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">add_circle</span>
+                  <span>Add Medication</span>
+                </button>
+              </div>
+
+              <div class="dynamic-items-container" id="medications-list-container">
+                <!-- Dynamic Medication Rows -->
+              </div>
+            </div>
+
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">nutrition</span>
+                    <span>Daily Vitamins &amp; Nutritional Supplements</span>
+                  </h3>
+                  <p>Over-the-counter supplements such as Vitamin D3, Omega-3, or Iron that directly influence laboratory parameters.</p>
+                </div>
+                <button type="button" class="btn-add-entity" id="btn-add-supp-row">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">add_circle</span>
+                  <span>Add Supplement</span>
+                </button>
+              </div>
+
+              <div class="dynamic-items-container" id="supplements-list-container">
+                <!-- Dynamic Supplement Rows -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: BASELINE VITALS & BMI -->
+          <div class="profile-panel-block" id="tab-panel-vitals">
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">monitor_weight</span>
+                    <span>Anthropometric Measurements &amp; Live BMI Calculator</span>
+                  </h3>
+                  <p>Adjust height and weight to automatically compute your Body Mass Index and classification category.</p>
+                </div>
+              </div>
+
+              <div class="form-grid-2col">
+                <div class="form-group-item">
+                  <label for="input-vital-height">Height (in cm) *</label>
+                  <input type="number" id="input-vital-height" class="form-input-field" min="60" max="250" placeholder="178" required />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-vital-weight">Weight (in kg) *</label>
+                  <input type="number" id="input-vital-weight" class="form-input-field" min="20" max="300" step="0.5" placeholder="77.0" required />
+                </div>
+              </div>
+
+              <!-- Live Computed BMI Strip -->
+              <div class="vitals-calculator-strip">
+                <div class="vital-stat-box" style="border-left: 4px solid var(--primary);">
+                  <span class="vital-stat-title">Calculated BMI</span>
+                  <div style="display: flex; align-items: baseline; gap: 6px;">
+                    <span class="vital-stat-val" id="calc-bmi-val">24.3</span>
+                    <span class="vital-stat-unit">kg/m²</span>
+                  </div>
+                  <span class="bmi-badge-pill bmi-optimal" id="calc-bmi-status">Optimal / Normal</span>
+                </div>
+
+                <div class="vital-stat-box">
+                  <span class="vital-stat-title">Healthy Weight Range</span>
+                  <div style="display: flex; align-items: baseline; gap: 6px;">
+                    <span class="vital-stat-val" id="calc-healthy-weight" style="font-size: 1.3rem;">58.6 – 78.9</span>
+                    <span class="vital-stat-unit">kg</span>
+                  </div>
+                  <span style="font-size: 0.72rem; color: var(--text-muted);">For your height</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">ecg_heart</span>
+                    <span>Resting Hemodynamic &amp; Metabolic Baseline</span>
+                  </h3>
+                  <p>Vital signs recorded at home or recent clinical checkups.</p>
+                </div>
+              </div>
+
+              <div class="form-grid-3col">
+                <div class="form-group-item">
+                  <label for="input-bp-systolic">Blood Pressure Systolic (mmHg)</label>
+                  <input type="number" id="input-bp-systolic" class="form-input-field" placeholder="120" min="70" max="240" />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-bp-diastolic">Blood Pressure Diastolic (mmHg)</label>
+                  <input type="number" id="input-bp-diastolic" class="form-input-field" placeholder="80" min="40" max="150" />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-heart-rate">Resting Heart Rate (BPM)</label>
+                  <input type="number" id="input-heart-rate" class="form-input-field" placeholder="72" min="40" max="180" />
+                </div>
+              </div>
+
+              <div class="form-grid-2col" style="margin-top: 1.5rem;">
+                <div class="form-group-item">
+                  <label for="input-spo2">SpO2 Oxygen Saturation (%)</label>
+                  <input type="number" id="input-spo2" class="form-input-field" placeholder="99" min="70" max="100" />
+                </div>
+
+                <div class="form-group-item">
+                  <label for="input-fasting-glucose">Fasting Blood Glucose (mg/dL)</label>
+                  <input type="number" id="input-fasting-glucose" class="form-input-field" placeholder="96" min="40" max="500" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: LIFESTYLE & PREVENTIVE -->
+          <div class="profile-panel-block" id="tab-panel-lifestyle">
+            <div class="profile-section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>
+                    <span class="material-symbols-outlined" style="font-size: 22px;">fitness_center</span>
+                    <span>Daily Habits &amp; Wellness Behaviors</span>
+                  </h3>
+                  <p>Lifestyle factors that directly guide AI risk stratification and dietary biomarker adjustments.</p>
+                </div>
+              </div>
+
+              <div class="form-grid-2col">
+                <div class="form-group-item">
+                  <label for="select-smoking">Smoking / Tobacco History</label>
+                  <select id="select-smoking" class="form-select-field">
+                    <option value="Non-smoker (Never)">Non-smoker (Never)</option>
+                    <option value="Former Smoker (Quit > 1 yr)">Former Smoker (Quit &gt; 1 yr)</option>
+                    <option value="Occasional / Social">Occasional / Social Smoker</option>
+                    <option value="Active Daily Smoker (< 10 cigs)">Active Daily Smoker (&lt; 10 cigs/day)</option>
+                    <option value="Heavy Daily Smoker (> 10 cigs)">Heavy Daily Smoker (&gt; 10 cigs/day)</option>
+                  </select>
+                </div>
+
+                <div class="form-group-item">
+                  <label for="select-alcohol">Alcohol Consumption</label>
+                  <select id="select-alcohol" class="form-select-field">
+                    <option value="Non-drinker / Abstinent">Non-drinker / Abstinent</option>
+                    <option value="Occasional social (1-2 units/week)">Occasional social (1-2 units/week)</option>
+                    <option value="Moderate (3-7 units/week)">Moderate (3-7 units/week)</option>
+                    <option value="Regular / Daily (> 7 units/week)">Regular / Daily (&gt; 7 units/week)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-3col" style="margin-top: 1.5rem;">
+                <div class="form-group-item">
+                  <label for="select-exercise">Physical Activity Routine</label>
+                  <select id="select-exercise" class="form-select-field">
+                    <option value="Sedentary (Little or no exercise)">Sedentary (Little or no exercise)</option>
+                    <option value="Light 1-2 sessions/week">Light 1-2 sessions/week</option>
+                    <option value="Moderate 3-4 sessions/week (Cardio + weights)">Moderate 3-4 sessions/week</option>
+                    <option value="Vigorous / Daily Athletic Training">Vigorous / Daily Athletic Training</option>
+                  </select>
+                </div>
+
+                <div class="form-group-item">
+                  <label for="select-diet">Primary Dietary Pattern</label>
+                  <select id="select-diet" class="form-select-field">
+                    <option value="Balanced Mediterranean / low refined carbs">Balanced Mediterranean / Whole Food</option>
+                    <option value="Vegetarian / Lacto-Ovo">Vegetarian / Lacto-Ovo</option>
+                    <option value="Pure Vegan / Plant-Based">Pure Vegan / Plant-Based</option>
+                    <option value="Low Carbohydrate / Diabetic Friendly">Low Carbohydrate / Diabetic Friendly</option>
+                    <option value="Standard Omnivore / High Protein">Standard Omnivore / High Protein</option>
+                  </select>
+                </div>
+
+                <div class="form-group-item">
+                  <label for="select-sleep">Average Sleep Duration</label>
+                  <select id="select-sleep" class="form-select-field">
+                    <option value="< 6 hours/night">&lt; 6 hours/night (Sleep deprived)</option>
+                    <option value="6 - 7 hours/night">6 - 7 hours/night</option>
+                    <option value="7 - 8.5 hours/night (Restorative)">7 - 8.5 hours/night (Restorative)</option>
+                    <option value="> 9 hours/night">&gt; 9 hours/night</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group-item" style="margin-top: 1.5rem;">
+                <label for="textarea-clinical-notes">Personal Health Notes &amp; Current Goals</label>
+                <textarea id="textarea-clinical-notes" class="form-textarea-field" rows="3" placeholder="Patient motivated to reverse atherogenic drift before progression. Fasting labs completed with Quest / Apollo diagnostics."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- STICKY BOTTOM SAVE BAR -->
+          <div class="profile-sticky-footer-bar">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="material-symbols-outlined" style="color: #1E7E4E; font-size: 24px;">lock</span>
+              <div>
+                <strong style="color: var(--primary); font-size: 0.92rem; display: block;">Local Vault Storage Active</strong>
+                <span style="font-size: 0.78rem; color: var(--text-muted);" id="save-status-timestamp">Last saved: Today at 09:45 AM</span>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <button type="button" class="btn-profile-action" id="btn-reset-defaults" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary);">
+                <span>Reset to Baseline</span>
+              </button>
+              <button type="submit" class="btn-profile-action btn-save-profile" id="btn-save-all-changes">
+                <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
+                <span>Save Patient Profile</span>
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container-xl" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="brand-icon-dna" style="width: 28px; height: 28px;">
+            <span class="material-symbols-outlined" style="font-size: 16px;">biotech</span>
+          </div>
+          <span style="font-weight: 700; color: var(--primary); font-size: 0.9rem;">Report Saathi</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">• Clinical AI Patient Health Dossier</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">
+          Protected under HIPAA &amp; ABDM Data Standards. All patient details stored encrypted in browser local storage.
+        </p>
+      </div>
+    </footer>
+
+    <!-- MAIN APP SCRIPT -->
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

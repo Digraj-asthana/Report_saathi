@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Saathi — Upload &amp; Ingest Medical Blood Panel</title>
+  <meta name="description" content="Instant optical character recognition (OCR) and clinical biomarker ingestion for Complete Blood Count (CBC), Metabolic, Lipid, and Thyroid lab panels.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+  <!-- FIXED 3D DNA CANVAS BACKGROUND -->
+  <div id="bg-canvas-container" class="bg-canvas-container" aria-hidden="true">
+    <canvas id="bg-frame-canvas" class="bg-canvas-layer"></canvas>
+    <canvas id="bg-helix-canvas" class="bg-canvas-layer"></canvas>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- SITE HEADER -->
+    <header class="site-header">
+      <div class="container-xl nav-row">
+        <div class="brand-block">
+          <a href="/index.html" class="brand-identity">
+            <div class="brand-icon-dna">
+              <span class="material-symbols-outlined" style="font-size: 24px;">biotech</span>
+            </div>
+            <div class="brand-name-group">
+              <span class="brand-name">Report Saathi</span>
+              <span class="brand-tagline">Clinical AI &amp; Biomarker Intelligence</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Multi-Page Navigation Menu -->
+        <nav>
+          <ul class="nav-tab-menu">
+            <li><a href="/index.html" class="nav-tab-link">Overview</a></li>
+            <li><a href="/upload.html" class="nav-tab-link active">Upload</a></li>
+            <li><a href="/intelligence.html" class="nav-tab-link">Report AI</a></li>
+            <li><a href="/tracker.html" class="nav-tab-link">Tracker</a></li>
+            <li><a href="/telehealth.html" class="nav-tab-link">Telehealth</a></li>
+            <li><a href="/assistant.html" class="nav-tab-link">AI Assistant</a></li>
+            <li><a href="/profile.html" class="nav-tab-link">Patient Profile</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions-group">
+          <a href="/upload.html" class="btn-upload-primary" id="nav-btn-upload-report" title="Upload Blood Report">
+            <span class="material-symbols-outlined" style="font-size: 16px;">upload_file</span>
+            <span>Upload Report</span>
+          </a>
+
+          <!-- Patient Profile Chip -->
+          <a href="/profile.html" class="nav-patient-profile" id="nav-patient-profile-link" title="Manage Patient Profile">
+            <div class="nav-patient-avatar" id="nav-patient-avatar-box">AM</div>
+            <div style="display: flex; flex-direction: column;">
+              <span class="nav-patient-name" id="nav-patient-name-display">Alex Morgan</span>
+              <span class="nav-patient-badge">Verified Dossier</span>
+            </div>
+          </a>
+
+          <!-- Quick Auth Switch Link -->
+          <a href="/login.html" class="btn-outline-login" id="nav-auth-btn" title="Sign In or Switch Patient Account">
+            <span class="material-symbols-outlined" style="font-size: 15px;">account_circle</span>
+            <span id="nav-auth-text">Sign In</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN UPLOAD WORKSPACE -->
+    <main class="upload-page-shell">
+      <div class="container-xl">
+
+        <!-- HEADER BANNER -->
+        <div class="upload-header-banner">
+          <div class="hero-tag-pill" style="margin-bottom: 0.75rem; display: inline-flex;">
+            <span class="pulse-indicator"></span>
+            <span>Next-Gen OCR &amp; Computer Vision Engine • 99.4% Extraction Precision</span>
+          </div>
+          <h1 class="hero-editorial-headline" style="font-size: 2.35rem; margin-bottom: 0.6rem;">
+            Upload &amp; Analyze <em>Blood Panel Report</em>
+          </h1>
+          <p class="hero-lead-text" style="font-size: 1.05rem; margin-bottom: 0; line-height: 1.6;">
+            Drop any hospital or pathology PDF, scan, or smartphone photo. Our deterministic AI deciphers over 85+ analytes with instant calibrated range metrics, clinical risk flags, and physician consulting checklist.
+          </p>
+        </div>
+
+        <!-- PRIMARY UPLOAD CARD (HIGH ACCESSIBILITY & RIGHT AT TOP) -->
+        <div class="upload-main-card" id="upload-primary-card">
+          <div class="upload-primary-dropzone" id="upload-main-dropzone">
+            <!-- Hidden inputs -->
+            <input type="file" id="upload-main-file-input" accept=".pdf,.png,.jpg,.jpeg,.dcm" style="display: none;">
+            <input type="file" id="upload-camera-file-input" accept="image/*" capture="environment" style="display: none;">
+
+            <div class="upload-icon-ring">
+              <span class="material-symbols-outlined" style="font-size: 40px;">cloud_upload</span>
+            </div>
+
+            <div style="text-align: center; max-width: 600px;">
+              <h3 style="font-family: var(--font-serif); font-size: 1.65rem; color: var(--primary); margin-bottom: 0.35rem;">
+                Drop Laboratory PDF or Capture Photo Here
+              </h3>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                Drag and drop your report file directly onto this box, or choose from device options below.
+              </p>
+            </div>
+
+            <!-- Prominent Action Buttons -->
+            <div class="upload-action-buttons-strip">
+              <button type="button" class="btn-upload-browse-large" id="btn-browse-file-main">
+                <span class="material-symbols-outlined" style="font-size: 20px;">folder_open</span>
+                <span>Browse Files on Computer</span>
+              </button>
+              <button type="button" class="btn-upload-camera" id="btn-camera-upload-main">
+                <span class="material-symbols-outlined" style="font-size: 20px;">photo_camera</span>
+                <span>Camera / Scan Document</span>
+              </button>
+            </div>
+
+            <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); display: flex; align-items: center; gap: 8px;">
+              <span class="material-symbols-outlined" style="font-size: 15px; color: #1E7E4E;">verified_user</span>
+              <span>Client-Side AES-256 In-Memory Encryption • Zero Third-Party Cloud Leaks</span>
+            </div>
+          </div>
+
+          <!-- Specifications and Supported Diagnostics Grid -->
+          <div class="upload-specs-grid">
+            <div class="upload-spec-item">
+              <div class="upload-spec-icon">
+                <span class="material-symbols-outlined">picture_as_pdf</span>
+              </div>
+              <div>
+                <strong style="font-size: 0.88rem; color: var(--primary);">Format Universal</strong>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px;">
+                  PDF e-reports, JPG/PNG mobile shots, scanned carbon slips &amp; DICOM imaging.
+                </p>
+              </div>
+            </div>
+
+            <div class="upload-spec-item">
+              <div class="upload-spec-icon">
+                <span class="material-symbols-outlined">speed</span>
+              </div>
+              <div>
+                <strong style="font-size: 0.88rem; color: var(--primary);">4.2s Extraction Speed</strong>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px;">
+                  PaddleOCR table recognition and LOINC synonym normalization under 5 seconds.
+                </p>
+              </div>
+            </div>
+
+            <div class="upload-spec-item">
+              <div class="upload-spec-icon">
+                <span class="material-symbols-outlined">domain</span>
+              </div>
+              <div>
+                <strong style="font-size: 0.88rem; color: var(--primary);">Recognized Networks</strong>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px;">
+                  Quest, Labcorp, Apollo, Metropolis, Thyrocare, SRL, Stanford &amp; Mayo Clinic.
+                </p>
+              </div>
+            </div>
+
+            <div class="upload-spec-item">
+              <div class="upload-spec-icon">
+                <span class="material-symbols-outlined">fact_check</span>
+              </div>
+              <div>
+                <strong style="font-size: 0.88rem; color: var(--primary);">Human Review Ready</strong>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px;">
+                  Interactive side-by-side bounding box verification with 1-click numeric corrections.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ONE-CLICK VERIFIED SAMPLE SPECIMENS -->
+          <div class="upload-samples-section">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 0.5rem;">
+              <div>
+                <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--primary); margin: 0;">
+                  Or Instant Test with Real-World Patient Samples
+                </h4>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 2px 0 0 0;">
+                  Click any validated clinical specimen below to load its multi-analyte lab panel instantly:
+                </p>
+              </div>
+              <span class="hero-tag-pill" style="font-size: 0.72rem; padding: 2px 8px;">
+                <span class="material-symbols-outlined" style="font-size: 13px;">flash_on</span>
+                <span>Instant Ingestion</span>
+              </span>
+            </div>
+
+            <div class="samples-cards-grid">
+              <!-- Sample 1: Sarah Jenkins (Critical Thrombocytopenia) -->
+              <div class="sample-patient-card" data-patient-key="sarah" role="button" tabindex="0" title="Load Sarah Jenkins (Platelet Drop)">
+                <div class="sample-patient-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="sample-patient-avatar">SJ</div>
+                    <div>
+                      <strong style="font-size: 0.92rem; color: var(--primary);">Sarah Jenkins</strong>
+                      <div style="font-size: 0.75rem; color: var(--text-muted);">34F • Quest Diagnostics</div>
+                    </div>
+                  </div>
+                  <span class="sample-status-tag sample-tag-critical">CRITICAL</span>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                  <strong>Platelets: 48 ×10³/µL</strong> (Severe Thrombocytopenia &amp; Microcytic Indices)
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: var(--primary); font-weight: 700; margin-top: auto; border-top: 1px solid var(--border-light); padding-top: 8px;">
+                  <span>Load Specimen</span>
+                  <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                </div>
+              </div>
+
+              <!-- Sample 2: Alex Morgan (Cardiovascular Risk) -->
+              <div class="sample-patient-card" data-patient-key="alex" role="button" tabindex="0" title="Load Alex Morgan (Cardiovascular Risk)">
+                <div class="sample-patient-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="sample-patient-avatar">AM</div>
+                    <div>
+                      <strong style="font-size: 0.92rem; color: var(--primary);">Alex Morgan</strong>
+                      <div style="font-size: 0.75rem; color: var(--text-muted);">42M • Apollo Clinical</div>
+                    </div>
+                  </div>
+                  <span class="sample-status-tag sample-tag-warning">ATTENTION</span>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                  <strong>hs-CRP: 3.8 mg/L</strong> &amp; Chol/HDL 5.4 (Vascular Inflammation &amp; Lipids)
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: var(--primary); font-weight: 700; margin-top: auto; border-top: 1px solid var(--border-light); padding-top: 8px;">
+                  <span>Load Specimen</span>
+                  <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                </div>
+              </div>
+
+              <!-- Sample 3: Priya Sharma (Anemia) -->
+              <div class="sample-patient-card" data-patient-key="priya" role="button" tabindex="0" title="Load Priya Sharma (Anemia)">
+                <div class="sample-patient-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="sample-patient-avatar">PS</div>
+                    <div>
+                      <strong style="font-size: 0.92rem; color: var(--primary);">Priya Sharma</strong>
+                      <div style="font-size: 0.75rem; color: var(--text-muted);">28F • Thyrocare</div>
+                    </div>
+                  </div>
+                  <span class="sample-status-tag sample-tag-warning">ATTENTION</span>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                  <strong>Hb: 9.8 g/dL</strong> &amp; Ferritin: 11 ng/mL (Microcytic Hypochromic Anemia)
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: var(--primary); font-weight: 700; margin-top: auto; border-top: 1px solid var(--border-light); padding-top: 8px;">
+                  <span>Load Specimen</span>
+                  <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                </div>
+              </div>
+
+              <!-- Sample 4: Ramesh Patel (Diabetes) -->
+              <div class="sample-patient-card" data-patient-key="ramesh" role="button" tabindex="0" title="Load Ramesh Patel (Diabetes)">
+                <div class="sample-patient-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="sample-patient-avatar">RP</div>
+                    <div>
+                      <strong style="font-size: 0.92rem; color: var(--primary);">Ramesh Patel</strong>
+                      <div style="font-size: 0.75rem; color: var(--text-muted);">52M • Redcliffe Labs</div>
+                    </div>
+                  </div>
+                  <span class="sample-status-tag sample-tag-warning">ATTENTION</span>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                  <strong>HbA1c: 7.4%</strong> &amp; Fasting Glucose: 156 mg/dL (Metabolic Glycemia)
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: var(--primary); font-weight: 700; margin-top: auto; border-top: 1px solid var(--border-light); padding-top: 8px;">
+                  <span>Load Specimen</span>
+                  <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                </div>
+              </div>
+
+              <!-- Sample 5: David Ross (Remission Surveillance) -->
+              <div class="sample-patient-card" data-patient-key="david" role="button" tabindex="0" title="Load David Ross (Remission)">
+                <div class="sample-patient-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="sample-patient-avatar">DR</div>
+                    <div>
+                      <strong style="font-size: 0.92rem; color: var(--primary);">David Ross</strong>
+                      <div style="font-size: 0.75rem; color: var(--text-muted);">58M • Stanford Health</div>
+                    </div>
+                  </div>
+                  <span class="sample-status-tag sample-tag-optimal">OPTIMAL</span>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                  <strong>18 of 18 In-Range</strong> (Full 4-Year Post-Chemo Remission Surveillance)
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: var(--primary); font-weight: 700; margin-top: auto; border-top: 1px solid var(--border-light); padding-top: 8px;">
+                  <span>Load Specimen</span>
+                  <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HOW THE INGESTION ENGINE WORKS -->
+        <div class="workflow-steps-grid" style="margin-top: 3rem;">
+          <div class="step-box-card">
+            <div class="step-header-row">
+              <span class="step-number-big">01</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 22px;">document_scanner</span>
+              </div>
+            </div>
+            <h3>Computer Vision &amp; Bounding Boxes</h3>
+            <p>
+              Scans multi-column laboratory tables, identifies reference interval columns, and binds bounding coordinates to every extracted numeric value.
+            </p>
+          </div>
+
+          <div class="step-box-card">
+            <div class="step-header-row">
+              <span class="step-number-big">02</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 22px;">fact_check</span>
+              </div>
+            </div>
+            <h3>Deterministic Calibration</h3>
+            <p>
+              Validates units (e.g. g/dL vs mg/dL, fL vs µm³), runs gender- and age-specific reference bounds, and strictly flags out-of-range biomarkers.
+            </p>
+          </div>
+
+          <div class="step-box-card">
+            <div class="step-header-row">
+              <span class="step-number-big">03</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 22px;">biotech</span>
+              </div>
+            </div>
+            <h3>Instant Clinical AI Synthesis</h3>
+            <p>
+              Generates plain-English patient explanations, longitudinal trend graphs, and ready-to-ask consultation checklists for your attending physician.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container-xl">
+        <div class="footer-emergency-notice">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="material-symbols-outlined" style="color: var(--accent-action); font-size: 18px;">emergency</span>
+            <span style="font-weight: 700; color: var(--primary);">Medical Emergency Notice:</span>
+            <span>Report Saathi is a clinical decision-support and biomarker intelligence platform, not a replacement for immediate emergency triage.</span>
+          </div>
+        </div>
+
+        <div class="footer-columns-grid">
+          <div class="footer-col">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <span class="brand-name" style="font-size: 1.35rem;">Report Saathi</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; max-width: 300px;">
+              Precision hematology quantification, automated analyte differential diagnosis, and tele-hematologist collaborative platform.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h5>Work Sections</h5>
+            <ul>
+              <li><a href="/upload.html">Upload Blood Report</a></li>
+              <li><a href="/intelligence.html">Blood Report Intelligence</a></li>
+              <li><a href="/tracker.html">Biomarker Tracker</a></li>
+              <li><a href="/telehealth.html">Doctor Consultations</a></li>
+              <li><a href="/assistant.html">AI Diagnostic Assistant</a></li>
+              <li><a href="/profile.html">Patient Profile Dossier</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Validation Alliances</h5>
+            <ul>
+              <li><a href="javascript:void(0)">Stanford Center for Hematology</a></li>
+              <li><a href="javascript:void(0)">Johns Hopkins Pathology Informatics</a></li>
+              <li><a href="javascript:void(0)">Mayo Clinic Diagnostic AI Lab</a></li>
+              <li><a href="javascript:void(0)">Quest &amp; Metropolis Core Labs</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Governance &amp; Privacy</h5>
+            <ul>
+              <li><a href="javascript:void(0)">HIPAA Business Associate Agreement</a></li>
+              <li><a href="javascript:void(0)">HL7 / FHIR Integration Specs</a></li>
+              <li><a href="javascript:void(0)">DPDP Act 2023 Compliance</a></li>
+              <li><a href="javascript:void(0)">Peer-Reviewed Clinical Trials</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom-bar">
+          <div>© 2026 Report Saathi Systems Inc. All clinical calculations are dual-validated by licensed hematologists.</div>
+          <div>Running Dedicated Cool Lab Mode • 227-Frame Continuous Background Canvas</div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>

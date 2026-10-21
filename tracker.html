@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Saathi — Biomarker Tracker & Longitudinal Trajectory</title>
+  <meta name="description" content="Multi-year biomarker comparison, physiological trajectory curves, and predictive drift analytics for preventative healthcare.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+  <!-- FIXED 3D DNA CANVAS BACKGROUND -->
+  <div id="bg-canvas-container" class="bg-canvas-container" aria-hidden="true">
+    <canvas id="bg-frame-canvas" class="bg-canvas-layer"></canvas>
+    <canvas id="bg-helix-canvas" class="bg-canvas-layer"></canvas>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- SITE HEADER -->
+    <header class="site-header">
+      <div class="container-xl nav-row">
+        <div class="brand-block">
+          <a href="/index.html" class="brand-identity">
+            <div class="brand-icon-dna">
+              <span class="material-symbols-outlined" style="font-size: 24px;">biotech</span>
+            </div>
+            <div class="brand-name-group">
+              <span class="brand-name">Report Saathi</span>
+              <span class="brand-tagline">Clinical AI &amp; Biomarker Intelligence</span>
+            </div>
+          </a>
+        </div>
+
+        <nav>
+          <ul class="nav-tab-menu">
+            <li><a href="/index.html" class="nav-tab-link">Overview</a></li>
+            <li><a href="/upload.html" class="nav-tab-link">Upload</a></li>
+            <li><a href="/intelligence.html" class="nav-tab-link">Report AI</a></li>
+            <li><a href="/tracker.html" class="nav-tab-link active">Tracker</a></li>
+            <li><a href="/telehealth.html" class="nav-tab-link">Telehealth</a></li>
+            <li><a href="/assistant.html" class="nav-tab-link">AI Assistant</a></li>
+            <li><a href="/profile.html" class="nav-tab-link">Patient Profile</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions-group">
+          <a href="/upload.html" class="btn-upload-primary" id="nav-btn-upload-report" title="Upload Blood Report">
+            <span class="material-symbols-outlined" style="font-size: 16px;">upload_file</span>
+            <span>Upload Report</span>
+          </a>
+
+          <!-- Patient Profile Chip -->
+          <a href="/profile.html" class="nav-patient-profile" id="nav-patient-profile-link" title="Manage Patient Profile">
+            <div class="nav-patient-avatar" id="nav-patient-avatar-box">AM</div>
+            <div style="display: flex; flex-direction: column;">
+              <span class="nav-patient-name" id="nav-patient-name-display">Alex Morgan</span>
+              <span class="nav-patient-badge">Verified Dossier</span>
+            </div>
+          </a>
+
+          <!-- Quick Auth Switch Link -->
+          <a href="/login.html" class="btn-outline-login" id="nav-auth-btn" title="Sign In or Switch Patient Account">
+            <span class="material-symbols-outlined" style="font-size: 15px;">account_circle</span>
+            <span id="nav-auth-text">Sign In</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE HERO BANNER -->
+    <section class="page-hero-banner">
+      <div class="container-xl" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: var(--accent-action); background: var(--status-critical-bg); padding: 3px 10px; border-radius: var(--radius-full); text-transform: uppercase;">
+            LAB MODULE 02
+          </span>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">Longitudinal Trend Engine • 4 Historical Runpoints</span>
+        </div>
+        <h1 class="page-title-editorial">
+          Biomarker Trajectory &amp; <em>Temporal Drift Tracker</em>
+        </h1>
+        <p class="page-subtitle-lead">
+          Isolated lab numbers tell only part of the story. Our longitudinal engine correlates your multi-year test results to detect early subtle biological shifts years before clinical onset.
+        </p>
+      </div>
+    </section>
+
+    <!-- MAIN TRACKER WORKSPACE -->
+    <main style="padding: 3.5rem 0 5rem;">
+      <div class="container-xl">
+
+        <!-- Timeline Period Selector Bar -->
+        <div class="tracker-timeline-bar">
+          <div>
+            <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); display: block; margin-bottom: 2px;">
+              Historical Comparison Baseline
+            </span>
+            <span id="tracker-active-period-label" style="font-family: var(--font-mono); font-size: 0.88rem; color: var(--text-secondary); font-weight: 600;">
+              Comparing 4 Multi-Year Test Periods (Jun '24 – Feb '26)
+            </span>
+          </div>
+
+          <div class="timeline-points-group">
+            <button class="tracker-timepoint-btn" data-period="Jun '24">Jun 2024</button>
+            <button class="tracker-timepoint-btn" data-period="Feb '25">Feb 2025</button>
+            <button class="tracker-timepoint-btn" data-period="Oct '25">Oct 2025</button>
+            <button class="tracker-timepoint-btn active" data-period="Feb '26">Feb 2026 (Now)</button>
+          </div>
+        </div>
+
+        <!-- 4 Key Visual Trajectory Cards Grid -->
+        <div class="tracker-cards-grid">
+
+          <!-- Card 1: hs-CRP Inflammatory Trajectory -->
+          <div class="tracker-metric-card">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+              <div>
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--accent-action); text-transform: uppercase;">Vascular Inflammation</span>
+                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--primary); margin: 2px 0;">hs-CRP (C-Reactive Protein)</h3>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Arterial Endothelial Strain Metric</span>
+              </div>
+              <span class="card-status-badge pill-elevated">+18.0% Alert</span>
+            </div>
+
+            <!-- SVG Multi-Year Line Graph -->
+            <div class="tracker-chart-large">
+              <svg viewBox="0 0 460 120" style="width: 100%; height: 100%;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Safe zone background -->
+                <rect x="0" y="70" width="460" height="50" fill="rgba(30, 126, 78, 0.08)"></rect>
+                <line x1="0" y1="70" x2="460" y2="70" stroke="#1E7E4E" stroke-width="1.5" stroke-dasharray="4 4"></line>
+                <text x="8" y="65" fill="#1E7E4E" font-size="10" font-family="JetBrains Mono" font-weight="600">Threshold &lt; 1.0 mg/L (Safe)</text>
+                
+                <!-- Trajectory Line -->
+                <path d="M40 95 L 160 82 L 300 55 L 420 22" stroke="#E4572E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                
+                <!-- Data Nodes -->
+                <circle cx="40" cy="95" r="5" fill="#1D4E89"></circle>
+                <text x="40" y="112" fill="#4A6382" font-size="10" font-family="JetBrains Mono" text-anchor="middle">1.2</text>
+                
+                <circle cx="160" cy="82" r="5" fill="#1D4E89"></circle>
+                <text x="160" y="100" fill="#4A6382" font-size="10" font-family="JetBrains Mono" text-anchor="middle">1.8</text>
+                
+                <circle cx="300" cy="55" r="5" fill="#E4572E"></circle>
+                <text x="300" y="45" fill="#E4572E" font-size="10" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">2.6</text>
+                
+                <circle cx="420" cy="22" r="6" fill="#E4572E" stroke="#FFFFFF" stroke-width="2"></circle>
+                <text x="420" y="14" fill="#E4572E" font-size="12" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">3.8 mg/L</text>
+              </svg>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 8px;">
+              <span>Jun 2024</span>
+              <span>Feb 2025</span>
+              <span>Oct 2025</span>
+              <span style="font-weight: 700; color: var(--accent-action);">Feb 2026 (Elevated)</span>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+              Longitudinal trajectory indicates steady upward drift from baseline. Pairing with anti-inflammatory omega-3 and cardiovascular review is clinically indicated.
+            </p>
+          </div>
+
+          <!-- Card 2: Total Chol / HDL Ratio -->
+          <div class="tracker-metric-card">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+              <div>
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--accent-action); text-transform: uppercase;">Atherogenic Vector</span>
+                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--primary); margin: 2px 0;">Total Cholesterol / HDL Ratio</h3>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Cardiovascular Plaque Risk Coefficient</span>
+              </div>
+              <span class="card-status-badge pill-elevated">5.4 Ratio</span>
+            </div>
+
+            <!-- SVG Multi-Year Line Graph -->
+            <div class="tracker-chart-large">
+              <svg viewBox="0 0 460 120" style="width: 100%; height: 100%;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="75" width="460" height="45" fill="rgba(30, 126, 78, 0.08)"></rect>
+                <line x1="0" y1="75" x2="460" y2="75" stroke="#1E7E4E" stroke-width="1.5" stroke-dasharray="4 4"></line>
+                <text x="8" y="70" fill="#1E7E4E" font-size="10" font-family="JetBrains Mono" font-weight="600">Desirable &lt; 3.5 Ratio</text>
+                
+                <path d="M40 85 L 160 68 L 300 48 L 420 28" stroke="#1D4E89" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                
+                <circle cx="40" cy="85" r="5" fill="#1D4E89"></circle>
+                <text x="40" y="102" fill="#4A6382" font-size="10" font-family="JetBrains Mono" text-anchor="middle">3.6</text>
+                
+                <circle cx="160" cy="68" r="5" fill="#1D4E89"></circle>
+                <text x="160" y="58" fill="#4A6382" font-size="10" font-family="JetBrains Mono" text-anchor="middle">4.2</text>
+                
+                <circle cx="300" cy="48" r="5" fill="#E4572E"></circle>
+                <text x="300" y="38" fill="#E4572E" font-size="10" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">4.8</text>
+                
+                <circle cx="420" cy="28" r="6" fill="#E4572E" stroke="#FFFFFF" stroke-width="2"></circle>
+                <text x="420" y="18" fill="#E4572E" font-size="12" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">5.4 Ratio</text>
+              </svg>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 8px;">
+              <span>Jun 2024</span>
+              <span>Feb 2025</span>
+              <span>Oct 2025</span>
+              <span style="font-weight: 700; color: var(--accent-action);">Feb 2026 (5.4)</span>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+              Consistent drift across 18 months indicates progressive lipid particle concentration. Modifying dietary saturated fats and boosting aerobic exercise will help reverse this trajectory.
+            </p>
+          </div>
+
+          <!-- Card 3: Vitamin D-25 Hydroxy -->
+          <div class="tracker-metric-card">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+              <div>
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--status-borderline); text-transform: uppercase;">Endocrine / Micronutrient</span>
+                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--primary); margin: 2px 0;">Vitamin D-25 Hydroxy</h3>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Bone Density &amp; Daytime Fatigue</span>
+              </div>
+              <span class="card-status-badge pill-borderline">28.0 ng/mL</span>
+            </div>
+
+            <div class="tracker-chart-large">
+              <svg viewBox="0 0 460 120" style="width: 100%; height: 100%;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="15" width="460" height="50" fill="rgba(30, 126, 78, 0.08)"></rect>
+                <line x1="0" y1="65" x2="460" y2="65" stroke="#B7811A" stroke-width="1.5" stroke-dasharray="4 4"></line>
+                <text x="8" y="60" fill="#B7811A" font-size="10" font-family="JetBrains Mono" font-weight="600">Sufficiency Boundary: 30 ng/mL</text>
+                
+                <path d="M40 38 L 160 52 L 300 88 L 420 72" stroke="#7FA7D9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                
+                <circle cx="40" cy="38" r="5" fill="#1E7E4E"></circle>
+                <text x="40" y="28" fill="#1E7E4E" font-size="10" font-family="JetBrains Mono" text-anchor="middle">38</text>
+                
+                <circle cx="160" cy="52" r="5" fill="#1D4E89"></circle>
+                <text x="160" y="42" fill="#4A6382" font-size="10" font-family="JetBrains Mono" text-anchor="middle">32</text>
+                
+                <circle cx="300" cy="88" r="5" fill="#E4572E"></circle>
+                <text x="300" y="104" fill="#E4572E" font-size="10" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">24 (Low)</text>
+                
+                <circle cx="420" cy="72" r="6" fill="#B7811A" stroke="#FFFFFF" stroke-width="2"></circle>
+                <text x="420" y="90" fill="#B7811A" font-size="12" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">28 ng/mL</text>
+              </svg>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 8px;">
+              <span>Jun 2024 (38)</span>
+              <span>Feb 2025 (32)</span>
+              <span>Oct 2025 (24)</span>
+              <span style="font-weight: 700; color: var(--status-borderline);">Feb 2026 (28)</span>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+              Mild seasonal recovery observed from October nadir (24 ng/mL). Continued oral D3 supplementation (2,000 IU/day) will restore the optimal 40–60 ng/mL window.
+            </p>
+          </div>
+
+          <!-- Card 4: Fasting Plasma Glucose -->
+          <div class="tracker-metric-card">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+              <div>
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--status-borderline); text-transform: uppercase;">Glycemic Homeostasis</span>
+                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--primary); margin: 2px 0;">Fasting Plasma Glucose</h3>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Metabolic Insulin Sensitivity Index</span>
+              </div>
+              <span class="card-status-badge pill-borderline">104 mg/dL</span>
+            </div>
+
+            <div class="tracker-chart-large">
+              <svg viewBox="0 0 460 120" style="width: 100%; height: 100%;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="55" width="460" height="65" fill="rgba(30, 126, 78, 0.08)"></rect>
+                <line x1="0" y1="55" x2="460" y2="55" stroke="#B7811A" stroke-width="1.5" stroke-dasharray="4 4"></line>
+                <text x="8" y="50" fill="#B7811A" font-size="10" font-family="JetBrains Mono" font-weight="600">Prediabetes Line: 100 mg/dL</text>
+                
+                <path d="M40 90 L 160 78 L 300 62 L 420 38" stroke="#1D4E89" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                
+                <circle cx="40" cy="90" r="5" fill="#1E7E4E"></circle>
+                <text x="40" y="106" fill="#1E7E4E" font-size="10" font-family="JetBrains Mono" text-anchor="middle">88</text>
+                
+                <circle cx="160" cy="78" r="5" fill="#1E7E4E"></circle>
+                <text x="160" y="94" fill="#4A6382" font-size="10" font-family="JetBrains Mono" text-anchor="middle">94</text>
+                
+                <circle cx="300" cy="62" r="5" fill="#4A6382"></circle>
+                <text x="300" y="78" fill="#4A6382" font-size="10" font-family="JetBrains Mono" text-anchor="middle">99</text>
+                
+                <circle cx="420" cy="38" r="6" fill="#B7811A" stroke="#FFFFFF" stroke-width="2"></circle>
+                <text x="420" y="26" fill="#B7811A" font-size="12" font-family="JetBrains Mono" font-weight="700" text-anchor="middle">104 mg/dL</text>
+              </svg>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 8px;">
+              <span>Jun 2024 (88)</span>
+              <span>Feb 2025 (94)</span>
+              <span>Oct 2025 (99)</span>
+              <span style="font-weight: 700; color: var(--status-borderline);">Feb 2026 (104)</span>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+              Subtle creep over the 100 mg/dL threshold indicates early insulin resistance. Easily reversible with 15-minute post-meal walks and lower glycemic load dinners.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Historical Longitudinal Data Matrix Table -->
+        <div class="data-matrix-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+            <div>
+              <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--primary);">
+                Comprehensive Longitudinal Pathology Matrix
+              </h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary);">Direct tabular lining alignment across 4 verified clinical collection dates</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button style="display: inline-flex; align-items: center; gap: 6px; padding: 0.45rem 1rem; border-radius: var(--radius-md); background: var(--primary-light); color: var(--primary); font-size: 0.82rem; font-weight: 700; border: 1px solid var(--border-color); cursor: pointer;" onclick="window.app.showToast('✓ Longitudinal CSV exported with 4 historical runs')">
+                <span class="material-symbols-outlined" style="font-size: 16px;">download</span> Export CSV
+              </button>
+              <a href="/telehealth.html" class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem;">
+                <span class="material-symbols-outlined" style="font-size: 16px;">video_call</span> Consult Doctor on Drift
+              </a>
+            </div>
+          </div>
+
+          <table class="data-matrix-table">
+            <thead>
+              <tr>
+                <th>Biomarker Analyte</th>
+                <th>Standard Ref</th>
+                <th>Jun 2024</th>
+                <th>Feb 2025</th>
+                <th>Oct 2025</th>
+                <th>Feb 2026 (Current)</th>
+                <th>Drift Velocity</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hemoglobin (Hb)</strong></td>
+                <td><span style="font-family: var(--font-mono);">13.5 - 17.5 g/dL</span></td>
+                <td><span style="font-family: var(--font-mono);">14.0</span></td>
+                <td><span style="font-family: var(--font-mono);">14.1</span></td>
+                <td><span style="font-family: var(--font-mono);">14.0</span></td>
+                <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--primary);">14.2 g/dL</span></td>
+                <td><span style="font-family: var(--font-mono); color: #1E7E4E;">+1.4% (Stable)</span></td>
+                <td><span class="card-status-badge pill-optimal">Optimal</span></td>
+              </tr>
+              <tr>
+                <td><strong>hs-CRP (Inflammation)</strong></td>
+                <td><span style="font-family: var(--font-mono);">&lt; 1.0 mg/L</span></td>
+                <td><span style="font-family: var(--font-mono);">1.2</span></td>
+                <td><span style="font-family: var(--font-mono);">1.8</span></td>
+                <td><span style="font-family: var(--font-mono);">2.6</span></td>
+                <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-action);">3.8 mg/L</span></td>
+                <td><span style="font-family: var(--font-mono); color: var(--accent-action);">+46% / yr ↑</span></td>
+                <td><span class="card-status-badge pill-elevated">Elevated</span></td>
+              </tr>
+              <tr>
+                <td><strong>Total Chol / HDL Ratio</strong></td>
+                <td><span style="font-family: var(--font-mono);">&lt; 3.5 Ratio</span></td>
+                <td><span style="font-family: var(--font-mono);">3.6</span></td>
+                <td><span style="font-family: var(--font-mono);">4.2</span></td>
+                <td><span style="font-family: var(--font-mono);">4.8</span></td>
+                <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-action);">5.4 Ratio</span></td>
+                <td><span style="font-family: var(--font-mono); color: var(--accent-action);">+12.4% ↑</span></td>
+                <td><span class="card-status-badge pill-elevated">High Risk</span></td>
+              </tr>
+              <tr>
+                <td><strong>Vitamin D-25 Hydroxy</strong></td>
+                <td><span style="font-family: var(--font-mono);">30 - 100 ng/mL</span></td>
+                <td><span style="font-family: var(--font-mono);">38</span></td>
+                <td><span style="font-family: var(--font-mono);">32</span></td>
+                <td><span style="font-family: var(--font-mono);">24</span></td>
+                <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--status-borderline);">28.0 ng/mL</span></td>
+                <td><span style="font-family: var(--font-mono); color: var(--status-borderline);">Rebounding</span></td>
+                <td><span class="card-status-badge pill-borderline">Borderline</span></td>
+              </tr>
+              <tr>
+                <td><strong>Fasting Glucose</strong></td>
+                <td><span style="font-family: var(--font-mono);">70 - 99 mg/dL</span></td>
+                <td><span style="font-family: var(--font-mono);">88</span></td>
+                <td><span style="font-family: var(--font-mono);">94</span></td>
+                <td><span style="font-family: var(--font-mono);">99</span></td>
+                <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--status-borderline);">104 mg/dL</span></td>
+                <td><span style="font-family: var(--font-mono); color: var(--status-borderline);">+5.0% ↑</span></td>
+                <td><span class="card-status-badge pill-borderline">Impaired</span></td>
+              </tr>
+              <tr>
+                <td><strong>eGFR (Kidney Function)</strong></td>
+                <td><span style="font-family: var(--font-mono);">&gt; 90 mL/min</span></td>
+                <td><span style="font-family: var(--font-mono);">108</span></td>
+                <td><span style="font-family: var(--font-mono);">105</span></td>
+                <td><span style="font-family: var(--font-mono);">107</span></td>
+                <td><span style="font-family: var(--font-mono); font-weight: 700; color: var(--primary);">106 mL/min</span></td>
+                <td><span style="font-family: var(--font-mono); color: #1E7E4E;">Stable</span></td>
+                <td><span class="card-status-badge pill-optimal">Optimal</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container-xl">
+        <div class="footer-columns-grid">
+          <div class="footer-col">
+            <span class="brand-name" style="font-size: 1.35rem; display: block; margin-bottom: 12px;">Report Saathi</span>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+              Multi-year trajectory analytics and differential biomarker drift monitoring for preventative longevity.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h5>Navigation Portals</h5>
+            <ul>
+              <li><a href="/index.html">Overview &amp; Home</a></li>
+              <li><a href="/intelligence.html">Blood Report Intelligence</a></li>
+              <li><a href="/tracker.html">Biomarker Tracker</a></li>
+              <li><a href="/telehealth.html">Doctor Consultations</a></li>
+              <li><a href="/assistant.html">AI Diagnostic Assistant</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Trajectory Insights</h5>
+            <ul>
+              <li><a href="javascript:void(0)">Cardiovascular Drift Curve</a></li>
+              <li><a href="javascript:void(0)">Insulin Resistance Velocity</a></li>
+              <li><a href="javascript:void(0)">Micronutrient Rebound Monitor</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Governance</h5>
+            <ul>
+              <li><a href="javascript:void(0)">HIPAA Certified BAA</a></li>
+              <li><a href="javascript:void(0)">HL7 &amp; FHIR Native</a></li>
+              <li><a href="javascript:void(0)">DPDP Act 2023</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom-bar">
+          <div>© 2026 Report Saathi Systems Inc. All rights reserved.</div>
+          <div>Running Dedicated Cool Lab Mode • 227-Frame Continuous Background Canvas</div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- FLOATING DNA HUD CONTROLLER -->
+  <div class="floating-hud" id="floating-hud">
+    <div class="hud-panel" id="hud-panel">
+      <div class="hud-header">
+        <h4>
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--primary);">biotech</span>
+          DNA Background Engine
+        </h4>
+      </div>
+
+      <div class="hud-control-row">
+        <div class="hud-control-label">
+          <span>Continuous Rotation Speed:</span>
+          <span id="hud-speed-val" style="font-family: var(--font-mono); color: var(--primary);">0.30x</span>
+        </div>
+        <input type="range" id="hud-speed-slider" class="hud-slider" min="0" max="1.2" step="0.05" value="0.30">
+      </div>
+
+      <div class="hud-control-row">
+        <div class="hud-control-label">
+          <span>Scroll Scrub Sensitivity:</span>
+          <span id="hud-scroll-val" style="font-family: var(--font-mono); color: var(--accent-action);">0.05</span>
+        </div>
+        <input type="range" id="hud-scroll-slider" class="hud-slider" min="0.01" max="0.20" step="0.01" value="0.05">
+      </div>
+
+      <div style="margin-top: 8px;">
+        <button id="hud-pause-btn" style="width: 100%; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #FFFFFF; color: var(--primary); font-size: 0.78rem; font-weight: 600; cursor: pointer;">
+          ⏸ Pause Rotation
+        </button>
+      </div>
+
+      <div class="hud-color-specs-strip">
+        <div style="font-weight: 700; color: var(--primary); text-transform: uppercase; font-size: 0.7rem; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; margin-bottom: 2px;">
+          Active Cool Lab Palette:
+        </div>
+        <div class="spec-line">
+          <span>Strand 1</span>
+          <span class="spec-chip"><span class="spec-swatch" style="background: #1D4E89;"></span> #1D4E89 (16%)</span>
+        </div>
+        <div class="spec-line">
+          <span>Strand 2</span>
+          <span class="spec-chip"><span class="spec-swatch" style="background: #7FA7D9;"></span> #7FA7D9 (16%)</span>
+        </div>
+        <div class="spec-line">
+          <span>Base-pair rungs</span>
+          <span class="spec-chip"><span class="spec-swatch" style="background: #D5E0EA;"></span> #D5E0EA (60%)</span>
+        </div>
+        <div class="spec-line">
+          <span>Nodes (dots)</span>
+          <span class="spec-chip"><span class="spec-swatch" style="background: #E4572E;"></span> #E4572E (25%)</span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 0.75rem;">
+        <span id="hud-frame-display" style="font-weight: 700; color: var(--primary);">001 / 227</span>
+        <span id="hud-fps-display" style="font-weight: 700; color: var(--accent-action);">60 FPS</span>
+      </div>
+    </div>
+
+    <button class="hud-trigger-btn" id="hud-trigger-btn" title="Open DNA Animation Controls">
+      <span class="material-symbols-outlined" style="font-size: 18px;">biotech</span>
+      <span>DNA Canvas Controls</span>
+    </button>
+  </div>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>

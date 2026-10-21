@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Saathi — Blood Report Intelligence & Clinical Telehealth (Overview)</title>
+  <meta name="description" content="Report Saathi translates CBC, metabolic, lipid, and genomic panels into clear clinical intelligence, calibrated biomarker range meters, and virtual telehealth care.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+  <!-- FIXED 3D DNA CANVAS BACKGROUND -->
+  <div id="bg-canvas-container" class="bg-canvas-container" aria-hidden="true">
+    <canvas id="bg-frame-canvas" class="bg-canvas-layer"></canvas>
+    <canvas id="bg-helix-canvas" class="bg-canvas-layer"></canvas>
+  </div>
+
+  <div id="loading-badge-wrap" style="position: fixed; top: 16px; right: 24px; z-index: 9999; background: var(--bg-beige-card); backdrop-filter: blur(16px); padding: 6px 14px; border-radius: 9999px; border: 1px solid var(--border-beige); font-size: 0.76rem; font-family: var(--font-mono); color: var(--primary); display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); transition: opacity 0.5s ease;">
+    <span class="pulse-indicator"></span>
+    <span id="canvas-load-progress">Buffering DNA Frames...</span>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- GLOBAL SITE HEADER & NAVIGATION -->
+    <header class="site-header">
+      <div class="container-xl nav-row">
+        <div class="brand-block">
+          <a href="/index.html" class="brand-identity">
+            <div class="brand-icon-dna">
+              <span class="material-symbols-outlined" style="font-size: 24px;">biotech</span>
+            </div>
+            <div class="brand-name-group">
+              <span class="brand-name">Report Saathi</span>
+              <span class="brand-tagline">Clinical AI &amp; Biomarker Intelligence</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Multi-Page Navigation Menu -->
+        <nav>
+          <ul class="nav-tab-menu">
+            <li><a href="/index.html" class="nav-tab-link active">Overview</a></li>
+            <li><a href="/upload.html" class="nav-tab-link">Upload</a></li>
+            <li><a href="/intelligence.html" class="nav-tab-link">Report AI</a></li>
+            <li><a href="/tracker.html" class="nav-tab-link">Tracker</a></li>
+            <li><a href="/telehealth.html" class="nav-tab-link">Telehealth</a></li>
+            <li><a href="/assistant.html" class="nav-tab-link">AI Assistant</a></li>
+            <li><a href="/profile.html" class="nav-tab-link">Patient Profile</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions-group">
+          <a href="/upload.html" class="btn-upload-primary" id="nav-btn-upload-report" title="Upload Blood Report">
+            <span class="material-symbols-outlined" style="font-size: 16px;">upload_file</span>
+            <span>Upload Report</span>
+          </a>
+
+          <!-- Patient Profile Chip -->
+          <a href="/profile.html" class="nav-patient-profile" id="nav-patient-profile-link" title="Manage Patient Profile">
+            <div class="nav-patient-avatar" id="nav-patient-avatar-box">AM</div>
+            <div style="display: flex; flex-direction: column;">
+              <span class="nav-patient-name" id="nav-patient-name-display">Alex Morgan</span>
+              <span class="nav-patient-badge">Verified Dossier</span>
+            </div>
+          </a>
+
+          <!-- Quick Auth Switch Link -->
+          <a href="/login.html" class="btn-outline-login" id="nav-auth-btn" title="Sign In or Switch Patient Account">
+            <span class="material-symbols-outlined" style="font-size: 15px;">account_circle</span>
+            <span id="nav-auth-text">Sign In</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section-block" id="hero">
+      <div class="container-xl hero-centered-wrap">
+        <div class="hero-copy-column">
+          <div class="hero-tag-pill">
+            <span class="pulse-indicator"></span>
+            <span>Clinical AI Demonstration • Next-Gen Hematology AI</span>
+          </div>
+
+          <h1 class="hero-editorial-headline">
+            From Cryptic Lab Values to Clear, <em>Actionable Medical Intelligence</em>.
+          </h1>
+
+          <p class="hero-lead-text">
+            Upload any standard blood panel PDF or smartphone capture. Our clinical-grade AI translates CBC, metabolic, lipid, and thyroid markers into intuitive visual diagnostics, longitudinal trajectory tracking, and instant doctor consults.
+          </p>
+
+          <div class="hero-fast-dropzone">
+            <input type="file" id="hero-file-input" accept=".pdf,.png,.jpg,.jpeg" style="display: none;">
+            <div class="dropzone-inner-click" id="hero-dropzone-click">
+              <div style="display: flex; align-items: center; gap: 1.25rem;">
+                <div class="dropzone-icon-box">
+                  <span class="material-symbols-outlined" style="font-size: 30px;">document_scanner</span>
+                </div>
+                <div class="dropzone-copy" style="text-align: left;">
+                  <h4 id="dropzone-status-text">Drop CBC, CMP, or Lipid PDF / Photo</h4>
+                  <p>Instant parsing of 85+ analytes &amp; DICOM imaging • Click to browse</p>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <a href="/upload.html" class="btn-hero-upload-direct" id="hero-btn-browse-file" style="text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 0.55rem 1.15rem; border-radius: var(--radius-full); background: #E4572E; color: #FFFFFF; font-weight: 700; font-size: 0.84rem; border: none; box-shadow: 0 2px 8px rgba(228,87,46,0.3); transition: var(--transition-fast);">
+                  <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+                  <span>Upload Blood Report</span>
+                </a>
+                <a href="/intelligence.html" class="btn-analyze-fast">
+                  <span class="material-symbols-outlined" style="font-size: 18px;">neurology</span>
+                  <span>Analyze in 30s</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="trust-metrics-strip">
+            <div class="trust-metric-item">
+              <span class="material-symbols-outlined">verified</span>
+              <span><strong>140,000+</strong> Reports Deciphered</span>
+            </div>
+            <div class="trust-metric-item">
+              <span class="material-symbols-outlined">timer</span>
+              <span><strong>15-Minute</strong> Physician Tele-Connect</span>
+            </div>
+            <div class="trust-metric-item">
+              <span class="material-symbols-outlined">lock</span>
+              <span>FHIR &amp; HIPAA Grade AES-256</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION NAVIGATION CARDS: DIRECT ACCESS TO EACH DEDICATED WORK SECTION -->
+    <section class="modules-section-block">
+      <div class="container-xl">
+        <div class="section-title-capsule">
+          <span class="section-eyebrow">Dedicated Clinical Portals</span>
+          <h2 class="section-headline">Explore Dedicated Work Modules</h2>
+          <p class="section-description" style="margin: 0 auto;">
+            Each stage of medical report analysis is separated into its own focused, clear interface for maximum diagnostic clarity.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 2rem;">
+          <!-- Module 1: Blood Report Intelligence -->
+          <a href="/intelligence.html" class="step-box-card module-lab-card theme-cyan" style="text-decoration: none; cursor: pointer;">
+            <span class="card-watermark-icon material-symbols-outlined" aria-hidden="true">biotech</span>
+            <div class="step-header-row">
+              <span class="step-number-big">01</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 26px;">biotech</span>
+              </div>
+            </div>
+            <h3>Blood Report Intelligence</h3>
+            <p>
+              In-depth breakdown of 26+ analytes with calibrated reference meters, drift analytics, and dual-lens interpretation.
+            </p>
+            <div class="card-features-strip">
+              <span class="card-feat-chip"><span class="material-symbols-outlined">analytics</span> 26+ Analytes</span>
+              <span class="card-feat-chip"><span class="material-symbols-outlined">tune</span> Calibrated</span>
+            </div>
+            <div class="module-card-footer">
+              <span class="module-cta-pill">
+                <span>Open Module</span>
+                <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- Module 2: Biomarker Tracker -->
+          <a href="/tracker.html" class="step-box-card module-lab-card theme-amber" style="text-decoration: none; cursor: pointer;">
+            <span class="card-watermark-icon material-symbols-outlined" aria-hidden="true">show_chart</span>
+            <div class="step-header-row">
+              <span class="step-number-big">02</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 26px;">show_chart</span>
+              </div>
+            </div>
+            <h3>Biomarker Tracker</h3>
+            <p>
+              Multi-year trajectory analytics comparing historical lab results over time with anomaly drift detection.
+            </p>
+            <div class="card-features-strip">
+              <span class="card-feat-chip"><span class="material-symbols-outlined">timeline</span> Trajectories</span>
+              <span class="card-feat-chip"><span class="material-symbols-outlined">warning_amber</span> Drift Alerts</span>
+            </div>
+            <div class="module-card-footer">
+              <span class="module-cta-pill">
+                <span>Open Tracker</span>
+                <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- Module 3: Doctor Consultations -->
+          <a href="/telehealth.html" class="step-box-card module-lab-card theme-emerald" style="text-decoration: none; cursor: pointer;">
+            <span class="card-watermark-icon material-symbols-outlined" aria-hidden="true">video_call</span>
+            <div class="step-header-row">
+              <span class="step-number-big">03</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 26px;">video_call</span>
+              </div>
+            </div>
+            <h3>Doctor Consultations</h3>
+            <p>
+              Connect with attending hematologists in a secure WebRTC exam room with synchronized reports and e-prescriptions.
+            </p>
+            <div class="card-features-strip">
+              <span class="card-feat-chip"><span class="material-symbols-outlined">lock</span> WebRTC HIPAA</span>
+              <span class="card-feat-chip"><span class="material-symbols-outlined">prescriptions</span> E-Prescribe</span>
+            </div>
+            <div class="module-card-footer">
+              <span class="module-cta-pill">
+                <span>Enter Exam Room</span>
+                <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- Module 4: AI Diagnostic Assistant -->
+          <a href="/assistant.html" class="step-box-card module-lab-card theme-purple" style="text-decoration: none; cursor: pointer;">
+            <span class="card-watermark-icon material-symbols-outlined" aria-hidden="true">psychology</span>
+            <div class="step-header-row">
+              <span class="step-number-big">04</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 26px;">psychology</span>
+              </div>
+            </div>
+            <h3>AI Diagnostic Assistant</h3>
+            <p>
+              Interactive clinical chat assistant to ask questions, understand lab markers, and export verified doctor checklists.
+            </p>
+            <div class="card-features-strip">
+              <span class="card-feat-chip"><span class="material-symbols-outlined">smart_toy</span> AI Co-Pilot</span>
+              <span class="card-feat-chip"><span class="material-symbols-outlined">checklist</span> Checklist</span>
+            </div>
+            <div class="module-card-footer">
+              <span class="module-cta-pill">
+                <span>Ask Assistant</span>
+                <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-STEP CLINICAL JOURNEY WORKFLOW SECTION -->
+    <section class="workflow-section-block">
+      <div class="container-xl">
+        <div class="section-title-capsule">
+          <span class="section-eyebrow">End-to-End Clinical Flow</span>
+          <h2 class="section-headline">How Report Saathi Bridges Lab Data to Direct Virtual Care</h2>
+          <p class="section-description" style="margin: 0 auto;">
+            Built for zero clinical friction. Upload raw papers, receive instant quantitative breakdown, and connect to certified medical specialists in minutes.
+          </p>
+        </div>
+
+        <div class="workflow-steps-grid">
+          <div class="step-box-card">
+            <div class="step-header-row">
+              <span class="step-number-big">01</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 22px;">document_scanner</span>
+              </div>
+            </div>
+            <h3>Smart OCR &amp; Optical Parsing</h3>
+            <p>
+              Proprietary computer vision reads wrinkled papers, blurred smartphone captures, or digital PDFs. Extracts 85+ parameters across CBC, Lipids, CMP, and Thyroid panels with 99.4% precision.
+            </p>
+            <span class="step-tag-pill">LOINC &amp; SNOMED-CT Indexed</span>
+          </div>
+
+          <div class="step-box-card">
+            <div class="step-header-row">
+              <span class="step-number-big">02</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 22px;">neurology</span>
+              </div>
+            </div>
+            <h3>Longitudinal Synthesis</h3>
+            <p>
+              AI doesn't just read isolated numbers. It correlates ferritin with chronic fatigue symptoms and pairs hs-CRP with lipoprotein trends to generate proactive differential risk profiles.
+            </p>
+            <span class="step-tag-pill">Temporal Trajectory Matching</span>
+          </div>
+
+          <div class="step-box-card">
+            <div class="step-header-row">
+              <span class="step-number-big">03</span>
+              <div class="step-icon-round">
+                <span class="material-symbols-outlined" style="font-size: 22px;">perm_phone_msg</span>
+              </div>
+            </div>
+            <h3>Virtual Care &amp; Rx Dispatch</h3>
+            <p>
+              Connect directly with vetted hematologists and primary care clinicians. Review synthetic reports collaboratively in a HIPAA-compliant virtual exam room with instant e-prescriptions.
+            </p>
+            <span class="step-tag-pill">Average 15m Tele-Wait Time</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLINICAL ASSURANCE & ACCREDITATIONS -->
+    <section class="accreditations-strip">
+      <div class="container-xl accreditations-row">
+        <div class="accreditations-title">
+          <h4>Engineered Under Strict CLIA &amp; CAP Laboratory Protocols</h4>
+          <p>Report Saathi algorithms are trained and dual-validated across 2.4 million de-identified pathology panels.</p>
+        </div>
+
+        <div class="accreditation-badges-list">
+          <div class="badge-accred-chip">
+            <span class="material-symbols-outlined" style="color: var(--primary);">shield</span>
+            <span>HIPAA Certified BAA</span>
+          </div>
+          <div class="badge-accred-chip">
+            <span class="material-symbols-outlined" style="color: #1E7E4E;">verified_user</span>
+            <span>HL7 / FHIR Native</span>
+          </div>
+          <div class="badge-accred-chip">
+            <span class="material-symbols-outlined" style="color: var(--accent-action);">biotech</span>
+            <span>CLIA Compliant</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- END OF HOMEPAGE: COMPANY & LEGAL QUICK-ACCESS DOCK -->
+    <section class="legal-access-dock" id="company-governance">
+      <div class="container-xl">
+        <div class="legal-access-card">
+          <div class="legal-access-content">
+            <div class="legal-access-pill">
+              <span class="material-symbols-outlined">policy</span>
+              <span>Clinical Governance &amp; Standards</span>
+            </div>
+            <h3 class="legal-access-title">Explore Our Clinical Mission, Usage Terms &amp; Privacy Protections</h3>
+            <p class="legal-access-desc">
+              Transparent medical AI engineering, laboratory-validated protocols, and strict patient health data safeguards under HIPAA and DPDP 2023.
+            </p>
+          </div>
+          <div class="legal-access-buttons">
+            <button type="button" class="btn-legal-dock legal-open-btn" data-legal="about" id="dock-btn-about" title="View About Us">
+              <span class="material-symbols-outlined">groups</span>
+              <span>About Us</span>
+            </button>
+            <button type="button" class="btn-legal-dock legal-open-btn" data-legal="terms" id="dock-btn-terms" title="View Terms &amp; Conditions">
+              <span class="material-symbols-outlined">gavel</span>
+              <span>Terms &amp; Conditions</span>
+            </button>
+            <button type="button" class="btn-legal-dock legal-open-btn" data-legal="privacy" id="dock-btn-privacy" title="View Privacy Policy">
+              <span class="material-symbols-outlined">privacy_tip</span>
+              <span>Privacy Policy</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container-xl">
+        <div class="footer-emergency-notice">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="material-symbols-outlined" style="color: var(--accent-action); font-size: 18px;">emergency</span>
+            <span style="font-weight: 700; color: var(--primary);">Medical Emergency Notice:</span>
+            <span>Report Saathi is a clinical decision-support and biomarker intelligence platform, not a replacement for immediate emergency triage.</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px; font-family: var(--font-mono); font-weight: 700; color: var(--primary);">
+            <span>National Crisis Line: 988</span>
+            <span style="color: var(--border-color);">|</span>
+            <span>Emergency Services: 112 / 108</span>
+          </div>
+        </div>
+
+        <div class="footer-columns-grid">
+          <div class="footer-col">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <span class="brand-name" style="font-size: 1.35rem;">Report Saathi</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; max-width: 300px;">
+              Precision hematology quantification, automated analyte differential diagnosis, and tele-hematologist collaborative platform.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h5>Work Sections</h5>
+            <ul>
+              <li><a href="/intelligence.html">Blood Report Intelligence</a></li>
+              <li><a href="/tracker.html">Biomarker Tracker</a></li>
+              <li><a href="/telehealth.html">Doctor Consultations</a></li>
+              <li><a href="/assistant.html">AI Diagnostic Assistant</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Company</h5>
+            <ul>
+              <li><a href="#about-us" class="legal-open-btn" data-legal="about">About Us</a></li>
+              <li><a href="#terms-conditions" class="legal-open-btn" data-legal="terms">Terms &amp; Conditions</a></li>
+              <li><a href="#privacy-policy" class="legal-open-btn" data-legal="privacy">Privacy Policy</a></li>
+              <li><a href="#company-governance" class="legal-open-btn" data-legal="about">Company &amp; Legal</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Governance &amp; Privacy</h5>
+            <ul>
+              <li><a href="#privacy-policy" class="legal-open-btn" data-legal="privacy">HIPAA Business Associate Agreement</a></li>
+              <li><a href="#privacy-policy" class="legal-open-btn" data-legal="privacy">HL7 / FHIR Integration Specs</a></li>
+              <li><a href="#privacy-policy" class="legal-open-btn" data-legal="privacy">DPDP Act 2023 Compliance</a></li>
+              <li><a href="#about-us" class="legal-open-btn" data-legal="about">Clinical Validation Overview</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom-bar">
+          <div>© 2026 Report Saathi Systems Inc. All clinical calculations are dual-validated by licensed hematologists.</div>
+          <div class="footer-legal-links">
+            <button type="button" class="footer-legal-btn legal-open-btn" data-legal="about">About</button>
+            <span aria-hidden="true">·</span>
+            <button type="button" class="footer-legal-btn legal-open-btn" data-legal="terms">Terms</button>
+            <span aria-hidden="true">·</span>
+            <button type="button" class="footer-legal-btn legal-open-btn" data-legal="privacy">Privacy</button>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- FLOATING DNA ANIMATION HUD -->
+  <div class="floating-hud" id="floating-hud">
+    <div class="hud-panel" id="hud-panel">
+      <div class="hud-header">
+        <h4>
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--primary);">biotech</span>
+          DNA Background Engine
+        </h4>
+      </div>
+
+      <div class="hud-control-row">
+        <div class="hud-control-label">
+          <span>Continuous Rotation Speed:</span>
+          <span id="hud-speed-val" style="font-family: var(--font-mono); color: var(--primary);">0.30x</span>
+        </div>
+        <input type="range" id="hud-speed-slider" class="hud-slider" min="0" max="1.2" step="0.05" value="0.30">
+      </div>
+
+      <div class="hud-control-row">
+        <div class="hud-control-label">
+          <span>Scroll Scrub Sensitivity:</span>
+          <span id="hud-scroll-val" style="font-family: var(--font-mono); color: var(--accent-action);">0.05</span>
+        </div>
+        <input type="range" id="hud-scroll-slider" class="hud-slider" min="0.01" max="0.20" step="0.01" value="0.05">
+      </div>
+
+      <div style="margin-top: 8px;">
+        <button id="hud-pause-btn" style="width: 100%; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: #FFFFFF; color: var(--primary); font-size: 0.78rem; font-weight: 600; cursor: pointer;">
+          ⏸ Pause Rotation
+        </button>
+      </div>
+
+      <div class="hud-color-specs-strip">
+        <div style="font-weight: 700; color: var(--primary); text-transform: uppercase; font-size: 0.7rem; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; margin-bottom: 2px;">
+          Active Cool Lab Palette:
+        </div>
+        <div class="spec-line">
+          <span>Strand 1</span>
+          <span class="spec-chip">
+            <span class="spec-swatch" style="background: #1D4E89;"></span> #1D4E89 (16%)
+          </span>
+        </div>
+        <div class="spec-line">
+          <span>Strand 2</span>
+          <span class="spec-chip">
+            <span class="spec-swatch" style="background: #7FA7D9;"></span> #7FA7D9 (16%)
+          </span>
+        </div>
+        <div class="spec-line">
+          <span>Base-pair rungs</span>
+          <span class="spec-chip">
+            <span class="spec-swatch" style="background: #D5E0EA;"></span> #D5E0EA (60%)
+          </span>
+        </div>
+        <div class="spec-line">
+          <span>Nodes (dots)</span>
+          <span class="spec-chip">
+            <span class="spec-swatch" style="background: #E4572E;"></span> #E4572E (25%)
+          </span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 0.75rem;">
+        <span id="hud-frame-display" style="font-weight: 700; color: var(--primary);">001 / 227</span>
+        <span id="hud-fps-display" style="font-weight: 700; color: var(--accent-action);">60 FPS</span>
+      </div>
+    </div>
+
+    <button class="hud-trigger-btn" id="hud-trigger-btn" title="Open DNA Animation Controls">
+      <span class="material-symbols-outlined" style="font-size: 18px;">biotech</span>
+      <span>DNA Canvas Controls</span>
+    </button>
+  </div>
+
+  <!-- ACCESSIBLE LEGAL & CLINICAL GOVERNANCE MODAL -->
+  <div id="legal-modal" class="legal-modal" role="dialog" aria-modal="true" aria-hidden="true" hidden>
+    <div class="legal-modal-backdrop"></div>
+    <div class="legal-modal-card">
+      <header class="legal-modal-header">
+        <div class="legal-modal-brand">
+          <div class="legal-modal-brand-icon">
+            <span class="material-symbols-outlined">policy</span>
+          </div>
+          <div>
+            <span class="legal-modal-eyebrow">Report Saathi Standards</span>
+            <h3 class="legal-modal-title">Clinical Governance &amp; Policies</h3>
+          </div>
+        </div>
+
+        <!-- Switcher Tabs inside the Modal -->
+        <nav class="legal-modal-tabs" aria-label="Policy Views">
+          <button type="button" class="legal-modal-tab active" data-legal-target="about" id="modal-tab-about">
+            <span class="material-symbols-outlined">groups</span>
+            <span>About Us</span>
+          </button>
+          <button type="button" class="legal-modal-tab" data-legal-target="terms" id="modal-tab-terms">
+            <span class="material-symbols-outlined">gavel</span>
+            <span>Terms &amp; Conditions</span>
+          </button>
+          <button type="button" class="legal-modal-tab" data-legal-target="privacy" id="modal-tab-privacy">
+            <span class="material-symbols-outlined">privacy_tip</span>
+            <span>Privacy Policy</span>
+          </button>
+        </nav>
+
+        <button type="button" id="legal-modal-close" class="legal-modal-close-btn" aria-label="Close dialog" title="Close modal (Esc)">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <div class="legal-modal-body">
+        <!-- ABOUT US VIEW -->
+        <div class="legal-modal-view" data-legal-view="about" id="legal-view-about">
+          <div class="legal-view-hero">
+            <div class="legal-panel-icon">
+              <span class="material-symbols-outlined">groups</span>
+            </div>
+            <div>
+              <span class="legal-panel-eyebrow">Our Mission</span>
+              <h3 id="legal-title-about">About Report Saathi</h3>
+            </div>
+          </div>
+          <div class="legal-view-content">
+            <p>
+              Report Saathi is a clinical decision-support platform engineered to turn cryptic laboratory values into clear, actionable medical intelligence. We empower patients and clinicians to interpret CBC, metabolic, lipid, thyroid, and comprehensive diagnostic panels through calibrated biomarker range meters, longitudinal trajectory tracking, and secure doctor consults.
+            </p>
+            <p>
+              Our interdisciplinary team bridges pathology informatics, hematology expertise, and responsible AI engineering. All analytical models are dual-validated across 2.4 million de-identified clinical lab records and designed to support—never replace—licensed clinical judgment.
+            </p>
+            
+            <div class="legal-highlight-box">
+              <h4>Key Platform Pillars</h4>
+              <ul class="legal-bullet-list">
+                <li><strong>Clear Visual Diagnostics:</strong> Translate cryptic lab codes and reference ranges into intuitive, color-calibrated biomarker meters.</li>
+                <li><strong>Trajectory Tracking:</strong> Monitor biomarker velocities and surface subtle physiologic drift over 30, 90, and 365-day horizons.</li>
+                <li><strong>Virtual Exam Rooms:</strong> Connect patients with certified hematologists and physicians in HIPAA-compliant tele-consultations.</li>
+                <li><strong>Laboratory-Grade Standards:</strong> Built around CLIA-oriented workflows, CAP validation guidelines, and native HL7 / FHIR data interoperability.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- TERMS & CONDITIONS VIEW -->
+        <div class="legal-modal-view" data-legal-view="terms" id="legal-view-terms" hidden>
+          <div class="legal-view-hero">
+            <div class="legal-panel-icon">
+              <span class="material-symbols-outlined">gavel</span>
+            </div>
+            <div>
+              <span class="legal-panel-eyebrow">Usage Agreement</span>
+              <h3 id="legal-title-terms">Terms &amp; Conditions</h3>
+            </div>
+          </div>
+          <div class="legal-view-content">
+            <p class="legal-updated">Last updated: October 20, 2026</p>
+            <p>
+              By accessing or using Report Saathi, you agree to comply with and be bound by these Terms &amp; Conditions. If you do not agree, please do not access or use the platform.
+            </p>
+
+            <h4>1. Informational &amp; Decision-Support Use</h4>
+            <p>
+              Report Saathi provides clinical decision-support and educational tools. Outputs generated by our AI models and biomarker visualizers do not constitute medical diagnosis, formal medical prescriptions, or emergency triage. Always consult a qualified licensed physician for medical conditions and healthcare decisions.
+            </p>
+
+            <h4>2. Account Responsibility</h4>
+            <p>
+              You are responsible for maintaining the confidentiality of your account credentials and for all actions taken under your account. Ensure that information submitted in your patient profile and medical reports is accurate and authentic.
+            </p>
+
+            <h4>3. Acceptable Use</h4>
+            <p>
+              You agree not to misuse the platform, attempt unauthorized reverse engineering, upload harmful or malicious files, or utilize Report Saathi in any manner that violates applicable healthcare privacy legislation or third-party intellectual property.
+            </p>
+
+            <h4>4. Medical Emergency Notice</h4>
+            <p>
+              Report Saathi is not intended for acute emergency situations. If you are experiencing symptoms such as chest pain, severe bleeding, breathing distress, or sudden loss of consciousness, contact emergency services immediately (112 / 108 / 911) or your nearest emergency department.
+            </p>
+
+            <h4>5. Limitation of Liability</h4>
+            <p>
+              To the fullest extent permitted by applicable law, Report Saathi and its affiliates are not liable for clinical decisions made solely on the basis of platform outputs, or for indirect, consequential, or punitive damages arising from the use of this service.
+            </p>
+
+            <h4>6. Service &amp; Terms Modifications</h4>
+            <p>
+              We periodically update our algorithms, security features, and terms to align with emerging regulatory guidelines. Continued usage of the platform following notification of updates signifies your agreement to the modified terms.
+            </p>
+          </div>
+        </div>
+
+        <!-- PRIVACY POLICY VIEW -->
+        <div class="legal-modal-view" data-legal-view="privacy" id="legal-view-privacy" hidden>
+          <div class="legal-view-hero">
+            <div class="legal-panel-icon">
+              <span class="material-symbols-outlined">privacy_tip</span>
+            </div>
+            <div>
+              <span class="legal-panel-eyebrow">Data Protection &amp; HIPAA</span>
+              <h3 id="legal-title-privacy">Privacy Policy</h3>
+            </div>
+          </div>
+          <div class="legal-view-content">
+            <p class="legal-updated">Last updated: October 20, 2026</p>
+            <p>
+              This Privacy Policy explains how Report Saathi collects, uses, encrypts, and protects your personal identification and protected health information (PHI) across our website and clinical portals.
+            </p>
+
+            <h4>1. Information We Collect</h4>
+            <p>
+              We collect patient profile identifiers (e.g., name, date of birth, contact details), uploaded clinical laboratory reports (PDFs, DICOMs, image scans), parsed biomarker telemetry, usage interactions, and technical security audit logs necessary to safeguard your records.
+            </p>
+
+            <h4>2. How We Use Health Information</h4>
+            <p>
+              Your data is utilized strictly to parse lab reports into structured biomarker metrics, generate AI diagnostic insights, track historical health trends, facilitate telehealth appointments with verified physicians, and satisfy legal audit obligations.
+            </p>
+
+            <h4>3. Military-Grade Security Safeguards</h4>
+            <p>
+              We implement end-to-end AES-256 encryption for data at rest and TLS 1.3 encryption for data in transit. Access to sensitive PHI is governed by least-privilege role-based access control (RBAC), multi-factor authentication, and continuous security auditing under HIPAA Business Associate standards.
+            </p>
+
+            <h4>4. Zero Unauthorized Sharing</h4>
+            <p>
+              We never sell, rent, or monetize your personal health information. Data is disclosed only to clinicians you explicitly select for consultations, authorized laboratory partners with signed BAAs, or when mandated by binding judicial orders.
+            </p>
+
+            <h4>5. Patient Rights &amp; DPDP 2023 Compliance</h4>
+            <p>
+              In full compliance with India's Digital Personal Data Protection (DPDP) Act 2023 and global health data frameworks, you retain complete rights to inspect, download a copy of, rectify, or request permanent deletion of your stored health dossier at any time.
+            </p>
+
+            <h4>6. Data Retention Protocols</h4>
+            <p>
+              We maintain active records only for as long as your account remains active or as required by clinical continuity and regulatory retention statutes. You can request deletion directly through your profile settings.
+            </p>
+
+            <h4>7. Privacy Inquiries &amp; Data Protection Officer</h4>
+            <p>
+              For any questions regarding your privacy rights or data handling practices, contact our Data Protection Office directly via the support module inside the Patient Profile portal.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="legal-modal-footer">
+        <div class="legal-modal-footer-badge">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--status-in-range);">shield</span>
+          <span>HIPAA BAA &amp; DPDP 2023 Compliant • 256-bit Encrypted</span>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" class="btn-legal-modal-close" id="legal-modal-footer-close">
+            <span>Dismiss</span>
+          </button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>
