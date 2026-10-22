@@ -4867,4 +4867,1008 @@ body {
 .sample-tag-warning { background: #FCF6E8; color: #B7811A; }
 .sample-tag-optimal { background: #EAF6EE; color: #1E7E4E; }
 
+/* ==========================================================================
+   MOBILE NAVIGATION DRAWER & TOGGLE BUTTON
+   ========================================================================== */
+
+.btn-mobile-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: #FFFFFF;
+  border: 1px solid var(--border-color);
+  color: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(15, 36, 62, 0.08);
+  transition: var(--transition-fast);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.btn-mobile-nav-toggle:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-hover);
+}
+
+.btn-mobile-nav-toggle.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.btn-mobile-nav-toggle .material-symbols-outlined {
+  font-size: 22px;
+}
+
+@media (max-width: 959px) {
+  .btn-mobile-nav-toggle {
+    display: inline-flex;
+  }
+}
+
+.mobile-nav-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 10005;
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0.3s ease;
+}
+
+.mobile-nav-drawer.open {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.mobile-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 23, 43, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-nav-drawer.open .mobile-drawer-backdrop {
+  opacity: 1;
+}
+
+.mobile-drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 360px;
+  background: #FFFFFF;
+  border-left: 1px solid var(--border-color);
+  box-shadow: -10px 0 35px rgba(7, 23, 43, 0.22);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+}
+
+.mobile-nav-drawer.open .mobile-drawer-panel {
+  transform: translateX(0);
+}
+
+.mobile-drawer-header {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-beige-header);
+  border-bottom: 1px solid var(--border-beige);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn-mobile-drawer-close {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background: #FFFFFF;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-mobile-drawer-close:hover {
+  background: var(--accent-action);
+  border-color: var(--accent-action);
+  color: #FFFFFF;
+}
+
+.mobile-drawer-patient-bar {
+  padding: 1rem 1.5rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-drawer-profile-link {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: #FFFFFF;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.mobile-drawer-profile-link:hover {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.mobile-drawer-nav {
+  padding: 1.25rem 1.25rem;
+  flex: 1;
+}
+
+.mobile-drawer-section-title {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.65rem;
+  padding-left: 0.5rem;
+}
+
+.mobile-drawer-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.mobile-nav-item .material-symbols-outlined {
+  font-size: 20px;
+  color: var(--primary);
+  transition: transform 0.2s ease;
+}
+
+.mobile-nav-item:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.mobile-nav-item.active {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.mobile-nav-item.active .material-symbols-outlined {
+  color: #FFFFFF;
+}
+
+.mobile-badge-pill {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: rgba(29, 78, 137, 0.12);
+  color: var(--primary);
+}
+
+.mobile-nav-item.active .mobile-badge-pill {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.mobile-badge-pill.green {
+  background: rgba(30, 126, 78, 0.12);
+  color: #1E7E4E;
+}
+
+.mobile-nav-item.active .mobile-badge-pill.green {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.mobile-drawer-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-mobile-upload-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-full);
+  background: #E4572E;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(228, 87, 46, 0.35);
+  transition: var(--transition-fast);
+}
+
+.btn-mobile-upload-action:hover {
+  background: #C4360F;
+}
+
+.mobile-drawer-trust-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   COMPREHENSIVE RESPONSIVE DESIGN SYSTEM
+   Breakpoints:
+   - Desktop Wide: >= 1280px
+   - Laptop Standard: 1024px - 1279px
+   - Tablet / Small Laptop: 768px - 1023px
+   - Mobile: <= 767px
+   - Compact Mobile: <= 480px
+   ========================================================================== */
+
+/* Universal Responsive Utilities */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+img, video, canvas, svg {
+  max-width: 100%;
+}
+
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --------------------------------------------------------------------------
+   1. LAPTOP & COMPACT DESKTOP (1024px to 1279px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1279px) {
+  .container-xl {
+    padding: 0 1.5rem;
+  }
+
+  .brand-tagline {
+    display: none;
+  }
+
+  .nav-tab-link {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .hero-editorial-headline {
+    font-size: 3.4rem;
+  }
+
+  .hero-lead-text {
+    font-size: 1.12rem;
+    max-width: 840px;
+    margin-bottom: 2.5rem;
+  }
+
+  .trust-metrics-strip {
+    gap: 2.5rem;
+  }
+
+  .report-12col-layout,
+  .telehealth-grid-12,
+  .assistant-grid-split {
+    gap: 1.75rem;
+  }
+
+  .chat-console-card {
+    height: 580px;
+  }
+
+  .profile-hero-card {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. TABLET / SMALL LAPTOP (768px to 1023px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .container-xl {
+    padding: 0 1.25rem;
+  }
+
+  /* Header adjustments */
+  .site-header {
+    height: 72px;
+  }
+
+  .nav-tab-menu {
+    display: none !important;
+  }
+
+  .btn-mobile-nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-patient-badge {
+    display: none;
+  }
+
+  .nav-patient-profile {
+    padding: 4px 10px;
+  }
+
+  /* Hero Section */
+  .hero-section-block {
+    padding: 3.5rem 0 3rem;
+  }
+
+  .hero-editorial-headline {
+    font-size: 2.85rem;
+    line-height: 1.2;
+    margin-bottom: 1.75rem;
+  }
+
+  .page-title-editorial {
+    font-size: 2.2rem;
+    line-height: 1.22;
+  }
+
+  .hero-lead-text, .page-subtitle-lead {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2.25rem;
+  }
+
+  /* Dropzone */
+  .hero-fast-dropzone {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .dropzone-inner-click {
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .trust-metrics-strip {
+    gap: 2rem;
+    font-size: 0.92rem;
+  }
+
+  /* Split Layouts stack into 1 column for clean hierarchy */
+  .report-12col-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .telehealth-grid-12 {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .assistant-grid-split {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .chat-console-card {
+    height: 540px;
+  }
+
+  /* Accreditations */
+  .accreditations-strip {
+    padding: 2.25rem 0;
+  }
+
+  .accreditations-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .accreditations-title {
+    max-width: 100%;
+  }
+
+  .accreditation-badges-list {
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .badge-accred-chip {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  /* Profile page */
+  .profile-hero-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .profile-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* Footer */
+  .footer-columns-grid {
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. MOBILE PHONES & PHABLETS (<= 767px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .container-xl {
+    padding: 0 1rem;
+  }
+
+  /* Header */
+  .site-header {
+    height: 64px;
+    padding: 0 0.85rem;
+  }
+
+  .nav-row {
+    gap: 0.75rem;
+  }
+
+  .brand-block {
+    gap: 0.6rem;
+  }
+
+  .brand-identity {
+    gap: 0.6rem;
+  }
+
+  .brand-icon-dna {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+  }
+
+  .brand-name {
+    font-size: 1.25rem;
+  }
+
+  .nav-actions-group {
+    gap: 0.45rem;
+  }
+
+  .nav-patient-name-display,
+  .nav-patient-badge {
+    display: none !important;
+  }
+
+  .nav-patient-profile {
+    padding: 2px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .nav-patient-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 0.78rem;
+  }
+
+  .btn-upload-primary {
+    padding: 0.38rem 0.75rem;
+    font-size: 0.76rem;
+  }
+
+  /* Hero Section */
+  .hero-section-block {
+    padding: 2.25rem 0 1.75rem;
+  }
+
+  .hero-tag-pill {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.85rem;
+    margin-bottom: 1.15rem;
+    max-width: 100%;
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  .hero-editorial-headline {
+    font-size: 2.1rem;
+    line-height: 1.22;
+    letter-spacing: -0.015em;
+    margin-bottom: 1.15rem;
+    word-break: break-word;
+  }
+
+  .page-title-editorial {
+    font-size: 1.85rem;
+    line-height: 1.22;
+  }
+
+  .hero-lead-text, .page-subtitle-lead {
+    font-size: 0.94rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  /* Hero Dropzone */
+  .hero-fast-dropzone {
+    padding: 0.85rem;
+    margin-bottom: 2rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .dropzone-inner-click {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.25rem 0.75rem;
+  }
+
+  .dropzone-inner-click > div:first-child {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.65rem;
+  }
+
+  .dropzone-icon-box {
+    width: 46px;
+    height: 46px;
+  }
+
+  .dropzone-copy {
+    text-align: center !important;
+  }
+
+  .dropzone-copy h4 {
+    font-size: 1.02rem;
+  }
+
+  .dropzone-copy p {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .dropzone-inner-click > div:last-child,
+  .upload-action-buttons-strip {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.55rem;
+  }
+
+  .btn-hero-upload-direct,
+  .btn-analyze-fast,
+  .btn-upload-browse-large,
+  .btn-upload-camera {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+  }
+
+  /* Trust Metrics Strip */
+  .trust-metrics-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 320px;
+    font-size: 0.85rem;
+    margin: 0 auto;
+  }
+
+  .trust-metric-item {
+    justify-content: center;
+  }
+
+  /* Modules / Dedicated Clinical Portals Grid */
+  .modules-section-block div[style*="grid-template-columns"],
+  .workflow-section-block div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  .step-box-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  /* Accreditations */
+  .accreditation-badges-list {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .badge-accred-chip {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* End-of-Homepage Legal Access Dock */
+  .legal-access-dock {
+    padding: 3rem 0 2.5rem;
+  }
+
+  .legal-access-card {
+    padding: 1.5rem 1.25rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+    text-align: left;
+  }
+
+  .legal-access-title {
+    font-size: 1.35rem;
+  }
+
+  .legal-access-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  .btn-legal-dock {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Legal Modal */
+  .legal-modal {
+    padding: 0.6rem;
+  }
+
+  .legal-modal-card {
+    max-height: 94vh;
+    border-radius: var(--radius-lg);
+  }
+
+  .legal-modal-header {
+    padding: 0.85rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .legal-modal-tabs {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .legal-modal-tab {
+    padding: 5px 10px;
+    font-size: 0.76rem;
+    white-space: nowrap;
+  }
+
+  .legal-modal-body {
+    padding: 1.25rem 1rem;
+  }
+
+  .legal-modal-footer {
+    padding: 0.85rem 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .btn-legal-modal-close {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Site Footer */
+  .site-footer {
+    padding: 2.5rem 0 1.5rem;
+  }
+
+  .footer-emergency-notice {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+
+  .footer-emergency-notice > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .footer-columns-grid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer-col h5 {
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    font-size: 0.76rem;
+  }
+
+  .footer-legal-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Intelligence / Analytes Workspace */
+  .filter-tabs-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+    padding: 0.75rem;
+  }
+
+  .category-filter-chips {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    gap: 0.4rem;
+  }
+
+  .category-filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip-filter-btn {
+    white-space: nowrap;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+
+  .lens-toggle-switch {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-lens-opt {
+    flex: 1;
+    text-align: center;
+    font-size: 0.76rem;
+  }
+
+  .biomarker-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .biomarker-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .biomarker-meter-wrap {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .meter-track {
+    height: 10px;
+  }
+
+  /* Biomarker Tracker */
+  .tracker-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .tracker-metric-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .tracker-chart-large svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Telehealth */
+  .doctor-status-banner-card {
+    padding: 1.25rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .doctor-bio-group {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .doctor-bio-group > div:last-child > div {
+    justify-content: center;
+  }
+
+  #telehealth-join-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Assistant */
+  .chat-console-card {
+    height: calc(100vh - 200px);
+    min-height: 460px;
+    max-height: 580px;
+    padding: 1.25rem 1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Patient Profile */
+  .profile-hero-card {
+    padding: 1.25rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+
+  .profile-user-group {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .profile-meta-pills {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .profile-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btn-profile-action {
+    flex: 1 1 calc(50% - 0.55rem);
+    justify-content: center;
+  }
+
+  .form-grid-3col {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* Upload Page */
+  .upload-specs-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .samples-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. COMPACT MOBILE SCREENS (<= 480px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .site-header {
+    height: 60px;
+    padding: 0 0.75rem;
+  }
+
+  .brand-name {
+    font-size: 1.15rem;
+  }
+
+  .btn-upload-primary {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+
+  #nav-auth-btn {
+    display: none !important;
+  }
+
+  .hero-editorial-headline {
+    font-size: 1.75rem;
+  }
+
+  .page-title-editorial {
+    font-size: 1.55rem;
+  }
+
+  .form-grid-3col,
+  .form-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .btn-profile-action {
+    flex: 1 1 100%;
+  }
+
+  .floating-hud {
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .hud-panel {
+    width: calc(100vw - 24px);
+    max-width: 300px;
+  }
+
+  .hud-trigger-btn {
+    padding: 6px 10px;
+    font-size: 0.72rem;
+  }
+}
+
 

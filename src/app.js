@@ -31,6 +31,7 @@ class ReportSaathiApp {
     this.initLoginPage();
     this.initUploadPage();
     this.initLegalModals();
+    this.initMobileNavigation();
     this.syncNavbarPatientProfile();
 
     this.syncUIWithState();
@@ -127,6 +128,196 @@ class ReportSaathiApp {
     };
     checkHash();
     window.addEventListener('hashchange', checkHash);
+  }
+
+  initMobileNavigation() {
+    const navRow = document.querySelector('.site-header .nav-row');
+    if (!navRow) return;
+
+    // Check if toggle button exists, if not create and insert into nav-actions-group
+    let toggleBtn = document.getElementById('mobile-nav-toggle');
+    if (!toggleBtn) {
+      toggleBtn = document.createElement('button');
+      toggleBtn.type = 'button';
+      toggleBtn.id = 'mobile-nav-toggle';
+      toggleBtn.className = 'btn-mobile-nav-toggle';
+      toggleBtn.setAttribute('aria-label', 'Toggle navigation menu');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.innerHTML = '<span class="material-symbols-outlined">menu</span>';
+
+      const actionsGroup = navRow.querySelector('.nav-actions-group');
+      if (actionsGroup) {
+        actionsGroup.appendChild(toggleBtn);
+      } else {
+        navRow.appendChild(toggleBtn);
+      }
+    }
+
+    // Check if drawer exists, if not create it
+    let drawer = document.getElementById('mobile-nav-drawer');
+    if (!drawer) {
+      drawer = document.createElement('div');
+      drawer.id = 'mobile-nav-drawer';
+      drawer.className = 'mobile-nav-drawer';
+      drawer.setAttribute('aria-hidden', 'true');
+
+      const currentPath = window.location.pathname.toLowerCase();
+      const isCurrent = (path) => {
+        if (path === '/' || path === '/index.html') {
+          return currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/') || currentPath === '';
+        }
+        return currentPath.includes(path.replace('.html', ''));
+      };
+
+      drawer.innerHTML = `
+        <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop"></div>
+        <div class="mobile-drawer-panel">
+          <div class="mobile-drawer-header">
+            <div class="brand-identity">
+              <div class="brand-icon-dna">
+                <span class="material-symbols-outlined" style="font-size: 22px;">biotech</span>
+              </div>
+              <div class="brand-name-group">
+                <span class="brand-name" style="font-size: 1.3rem;">Report Saathi</span>
+                <span class="brand-tagline" style="font-size: 0.7rem;">Clinical AI &amp; Diagnostics</span>
+              </div>
+            </div>
+            <button type="button" class="btn-mobile-drawer-close" id="mobile-drawer-close" aria-label="Close navigation menu">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <div class="mobile-drawer-patient-bar">
+            <div class="nav-patient-avatar" id="mobile-drawer-avatar">AM</div>
+            <div style="display: flex; flex-direction: column; min-width: 0;">
+              <span style="font-weight: 700; font-size: 0.88rem; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="mobile-drawer-patient-name">Alex Morgan</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted);">Verified Patient Dossier</span>
+            </div>
+            <a href="/profile.html" class="mobile-drawer-profile-link" title="Manage Patient Profile">
+              <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+            </a>
+          </div>
+
+          <nav class="mobile-drawer-nav">
+            <span class="mobile-drawer-section-title">Clinical Portals</span>
+            <ul class="mobile-drawer-list">
+              <li>
+                <a href="/index.html" class="mobile-nav-item ${isCurrent('/index.html') ? 'active' : ''}">
+                  <span class="material-symbols-outlined">home</span>
+                  <span>Overview &amp; Architecture</span>
+                </a>
+              </li>
+              <li>
+                <a href="/upload.html" class="mobile-nav-item ${isCurrent('/upload.html') ? 'active' : ''}">
+                  <span class="material-symbols-outlined">upload_file</span>
+                  <span>Upload Blood Report</span>
+                  <span class="mobile-badge-pill">OCR AI</span>
+                </a>
+              </li>
+              <li>
+                <a href="/intelligence.html" class="mobile-nav-item ${isCurrent('/intelligence.html') ? 'active' : ''}">
+                  <span class="material-symbols-outlined">neurology</span>
+                  <span>Report AI &amp; Analytes</span>
+                </a>
+              </li>
+              <li>
+                <a href="/tracker.html" class="mobile-nav-item ${isCurrent('/tracker.html') ? 'active' : ''}">
+                  <span class="material-symbols-outlined">timeline</span>
+                  <span>Biomarker Trajectory Tracker</span>
+                </a>
+              </li>
+              <li>
+                <a href="/telehealth.html" class="mobile-nav-item ${isCurrent('/telehealth.html') ? 'active' : ''}">
+                  <span class="material-symbols-outlined">video_camera_front</span>
+                  <span>Doctor Consultations</span>
+                  <span class="mobile-badge-pill green">Live MD</span>
+                </a>
+              </li>
+              <li>
+                <a href="/assistant.html" class="mobile-nav-item ${isCurrent('/assistant.html') ? 'active' : ''}">
+                  <span class="material-symbols-outlined">support_agent</span>
+                  <span>AI Diagnostic Assistant</span>
+                </a>
+              </li>
+              <li>
+                <a href="/profile.html" class="mobile-nav-item ${isCurrent('/profile.html') ? 'active' : ''}">
+                  <span class="material-symbols-outlined">badge</span>
+                  <span>Patient Health Dossier</span>
+                </a>
+              </li>
+            </ul>
+
+            <span class="mobile-drawer-section-title" style="margin-top: 1.25rem;">Governance &amp; Account</span>
+            <ul class="mobile-drawer-list">
+              <li>
+                <a href="/login.html" class="mobile-nav-item ${isCurrent('/login.html') ? 'active' : ''}">
+                  <span class="material-symbols-outlined">account_circle</span>
+                  <span>Sign In / Switch Patient</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="mobile-drawer-footer">
+            <a href="/upload.html" class="btn-mobile-upload-action">
+              <span class="material-symbols-outlined">upload_file</span>
+              <span>Upload New Report</span>
+            </a>
+            <div class="mobile-drawer-trust-note">
+              <span class="material-symbols-outlined">shield</span>
+              <span>HIPAA &amp; DPDP 2023 Compliant</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(drawer);
+    }
+
+    const backdrop = drawer.querySelector('.mobile-drawer-backdrop');
+    const closeBtn = drawer.querySelector('#mobile-drawer-close');
+
+    const openDrawer = () => {
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      toggleBtn.classList.add('active');
+      toggleBtn.innerHTML = '<span class="material-symbols-outlined">close</span>';
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeDrawer = () => {
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.classList.remove('active');
+      toggleBtn.innerHTML = '<span class="material-symbols-outlined">menu</span>';
+      document.body.style.overflow = '';
+    };
+
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (drawer.classList.contains('open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        closeDrawer();
+      }
+    });
+
+    drawer.querySelectorAll('.mobile-nav-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        closeDrawer();
+      });
+    });
   }
 
   initBackgroundEngine() {
@@ -1256,10 +1447,14 @@ class ReportSaathiApp {
       const parts = (profile.name || 'Alex Morgan').trim().split(/\s+/);
       const initials = parts.length > 1 ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() : parts[0].slice(0, 2).toUpperCase();
       avatarBox.textContent = initials;
+      const drawerAvatar = document.getElementById('mobile-drawer-avatar');
+      if (drawerAvatar) drawerAvatar.textContent = initials;
     }
 
     if (nameDisplay) {
       nameDisplay.textContent = profile.name || 'Alex Morgan';
+      const drawerName = document.getElementById('mobile-drawer-patient-name');
+      if (drawerName) drawerName.textContent = profile.name || 'Alex Morgan';
     }
 
     if (authText) {
