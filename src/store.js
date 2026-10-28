@@ -589,7 +589,7 @@ class MedicalStore {
     ];
     this.prescriptions = [];
     this.auditLogs = [
-      { timestamp: new Date().toISOString(), action: 'STATE_INITIALIZED', user: 'System', details: 'Report Saathi Store v1.0 Ready' }
+      { timestamp: new Date().toISOString(), action: 'STATE_INITIALIZED', user: 'System', details: 'AAaogyamAi Store v1.0 Ready' }
     ];
     this.saveState();
   }

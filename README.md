@@ -1,8 +1,8 @@
-# 🧬 Report Saathi — Clinical AI & Biomarker Intelligence
+# 🧬 AAaogyamAi — Clinical AI & Biomarker Intelligence
 
 > From Cryptic Lab Values to Clear, Actionable Medical Intelligence.
 
-Report Saathi translates CBC, metabolic, lipid, and thyroid blood report panels into intuitive clinical diagnostics, calibrated biomarker meters, longitudinal trajectory tracking, and virtual telehealth exam rooms.
+AAaogyamAi translates CBC, metabolic, lipid, and thyroid blood report panels into intuitive clinical diagnostics, calibrated biomarker meters, longitudinal trajectory tracking, and virtual telehealth exam rooms.
 
 ---
 
@@ -77,9 +77,9 @@ npm run preview
 - **CLIA & CAP:** Aligned with laboratory analytical standards.
 - **HIPAA & DPDP 2023:** 256-bit AES encryption at rest and TLS 1.3 in transit.
 - **Interoperability:** Native support for HL7 / FHIR data models.
-- **Disclaimer:** Report Saathi provides clinical decision-support and educational tools. Outputs do not replace licensed clinical judgment.
+- **Disclaimer:** AAaogyamAi provides clinical decision-support and educational tools. Outputs do not replace licensed clinical judgment.
 
 ---
 
 ## 📄 License
-ISC License © 2026 Report Saathi Systems Inc.
+ISC License © 2026 AAaogyamAi Systems Inc.

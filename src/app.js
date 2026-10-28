@@ -178,7 +178,7 @@ class ReportSaathiApp {
                 <span class="material-symbols-outlined" style="font-size: 22px;">biotech</span>
               </div>
               <div class="brand-name-group">
-                <span class="brand-name" style="font-size: 1.3rem;">Report Saathi</span>
+                <span class="brand-name" style="font-size: 1.3rem;">AAaogyamAi</span>
                 <span class="brand-tagline" style="font-size: 0.7rem;">Clinical AI &amp; Diagnostics</span>
               </div>
             </div>
@@ -511,7 +511,7 @@ class ReportSaathiApp {
         <div class="chat-msg-assistant">
           <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-weight: 700; color: var(--primary); font-size: 0.8rem;">
             <span class="material-symbols-outlined" style="font-size: 16px;">verified</span>
-            <span>Report Saathi Diagnostic AI</span>
+            <span>AAaogyamAi Diagnostic AI</span>
           </div>
           <p style="margin: 0 0 8px 0;">
             Hello ${report.patientName.split(' ')[0]}. I've reviewed your verified laboratory specimen (<code>${report.mrn}</code>).
